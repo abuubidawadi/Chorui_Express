@@ -47,7 +47,7 @@ void Exit(){
 }
 
 /*
-function iDraw() is called again and again by system.
+function iDraw() is called again and again by the system.
 */
 void iDraw()
 {
