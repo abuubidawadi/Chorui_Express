@@ -170,7 +170,6 @@ void iKeyboard(unsigned char key)
     case '\r':
         GameState = 1;
         break;
-    // place your codes for other keys here
     default:
         break;
     }
