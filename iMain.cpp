@@ -8,7 +8,7 @@ int GameState=0, bg_music=1, bird_sound=1;
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
     iSetColor(0, 0, 0);
-    iText(350, 100, "Press Space to go to Main Menu", GLUT_BITMAP_TIMES_ROMAN_24);
+    iText(350, 100, "Press Enter to go to Main Menu", GLUT_BITMAP_TIMES_ROMAN_24);
 }
 
 void MainMenuPage(){
@@ -167,7 +167,7 @@ void iKeyboard(unsigned char key)
 {
     switch (key)
     {
-    case ' ':
+    case '\r':
         GameState = 1;
         break;
     // place your codes for other keys here
