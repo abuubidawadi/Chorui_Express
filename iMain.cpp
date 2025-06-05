@@ -208,7 +208,7 @@ void iMouse(int button, int state, int mx, int my){
                                 pause++;
                             }
                             else if(mx > 385 && mx < 694 && my > 210 && my < 252){      //exit
-                                GameState = 1;
+                                GameState = 1; level = 0; pause++;
                             }
                         }
         }
