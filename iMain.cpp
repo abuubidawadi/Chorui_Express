@@ -3,7 +3,7 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState=0, level=0, bg_music=1, bird_sound=1;
+int GameState=0, level=0, pause=0, bg_music=1, bird_sound=1;
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -17,16 +17,32 @@ void GameStart(){
     iShowImage(0, 0, "Difficulty.jpg");
 }
 
+void PauseWindow(){
+    iShowImage(0, 0, "PauseWindow.png");
+}
+
 void LevelEasy(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "EasyBG.jpg");
+        if(pause%2!=0){
+            PauseWindow();
+        }
+        else{}
 }
 
 void LevelMedium(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "MediumBG.jpg");
+        if(pause%2!=0){
+            PauseWindow();
+        }
+        else{}
 }
 
 void LevelHard(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "HardBG.jpg");
+        if(pause%2!=0){
+            PauseWindow();
+        }
+        else{}
 }
 
 void Instructions(){
@@ -165,7 +181,7 @@ void iMouse(int button, int state, int mx, int my){
             }
         }
 
-        else if(GameState==2){      //in difficulty page
+        else if(GameState==2 && level==0){      //in difficulty page
             if(mx > 845 && mx < 980 && my > 470 && my < 577){
                 GameState = 1;      //back to main menu
             }
@@ -178,6 +194,24 @@ void iMouse(int button, int state, int mx, int my){
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
                 level = 3;      //hard
             }
+        }
+
+        else if(GameState==2 && level==1){      //in easy level
+                if(mx > 924 && mx < 974 && my > 530 && my < 574){
+                    pause++;
+                }
+        }
+
+        else if(GameState==2 && level==2){      //in medium level
+                if(mx > 924 && mx < 974 && my > 530 && my < 574){
+                    pause++;
+                }
+        }
+
+        else if(GameState==2 && level==3){      //in hard level
+                if(mx > 924 && mx < 974 && my > 530 && my < 574){
+                    pause++;
+                }
         }
     }
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
