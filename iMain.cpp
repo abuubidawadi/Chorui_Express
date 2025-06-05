@@ -3,7 +3,7 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState=0, bg_music=1, bird_sound=1;
+int GameState=0, level=0, bg_music=1, bird_sound=1;
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -16,6 +16,18 @@ void MainMenuPage(){
 }
 
 void GameStart(){
+    iShowImage(0, 0, "Difficulty.jpg");
+}
+
+void LevelEasy(){
+    iShowImage(0, 0, "HomePage.jpg");
+}
+
+void LevelMedium(){
+    iShowImage(0, 0, "HomePage.jpg");
+}
+
+void LevelHard(){
     iShowImage(0, 0, "HomePage.jpg");
 }
 
@@ -57,10 +69,21 @@ void iDraw()
         HomePage();
     }
     else if(GameState==1){
-        MainMenuPage();
+        MainMenuPage(); 
     }
     else if(GameState==2){
-        GameStart();
+        if(level==0){
+            GameStart();
+        }
+        else if(level==1){
+            LevelEasy();
+        }
+        else if(level==2){
+            LevelMedium();
+        }
+        else if(level==3){
+            LevelHard();
+            }
     }
     else if(GameState==3){
         Instructions();
@@ -141,6 +164,21 @@ void iMouse(int button, int state, int mx, int my){
             }
             else if(mx > 418 && mx < 492 && my > 269 && my < 317){
                 bird_sound = 1;
+            }
+        }
+
+        else if(GameState==2){      //in difficulty page
+            if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                GameState = 1;      //back to main menu
+            }
+            else if(mx > 356 && mx < 645 && my > 296 && my < 371){
+                level = 1;      //easy
+            }
+            else if(mx > 356 && mx < 645 && my > 192 && my < 265){
+                level = 2;      //medium
+            }
+            else if(mx > 356 && mx < 645 && my > 94 && my < 166){
+                level = 3;      //hard
             }
         }
     }
