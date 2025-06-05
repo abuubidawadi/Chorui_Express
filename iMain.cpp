@@ -196,22 +196,21 @@ void iMouse(int button, int state, int mx, int my){
             }
         }
 
-        else if(GameState==2 && level==1){      //in easy level
+        else if(GameState==2 && level>0){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
                     pause++;
                 }
-        }
-
-        else if(GameState==2 && level==2){      //in medium level
-                if(mx > 924 && mx < 974 && my > 530 && my < 574){
-                    pause++;
-                }
-        }
-
-        else if(GameState==2 && level==3){      //in hard level
-                if(mx > 924 && mx < 974 && my > 530 && my < 574){
-                    pause++;
-                }
+                if(pause%2!=0){
+                            if(mx > 385 && mx < 694 && my > 339 && my < 395){       //continue
+                                pause++;
+                            }
+                            else if(mx > 385 && mx < 694 && my > 277 && my < 327){      //restart
+                                pause++;
+                            }
+                            else if(mx > 385 && mx < 694 && my > 210 && my < 252){      //exit
+                                GameState = 1;
+                            }
+                        }
         }
     }
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
