@@ -3,7 +3,9 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState=0, level=0, pause=0, bg_music=1, bird_sound=1;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
+int BirdX = 150, BirdY = 250, SpriteNum = 0;
+char BirdImage[6][32];
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -21,8 +23,23 @@ void PauseWindow(){
     iShowImage(0, 0, "PauseWindow.png");
 }
 
+void PopulateSprite(){
+    for (int i = 0; i < 6; i++){
+        sprintf(BirdImage[i], "Sprite_%d.png", i);
+    }
+}
+
+void UpdateSprite(){
+    SpriteNum = (SpriteNum + 1) % 6;
+}
+
+void GamePlay(){
+    iShowImage(BirdX, BirdY, BirdImage[SpriteNum]);
+}
+
 void LevelEasy(){
     iShowImage(0, 0, "EasyBG.jpg");
+    GamePlay();
         if(pause%2!=0){
             PauseWindow();
         }
@@ -31,6 +48,7 @@ void LevelEasy(){
 
 void LevelMedium(){
     iShowImage(0, 0, "MediumBG.jpg");
+    GamePlay();
         if(pause%2!=0){
             PauseWindow();
         }
@@ -39,6 +57,7 @@ void LevelMedium(){
 
 void LevelHard(){
     iShowImage(0, 0, "HardBG.jpg");
+    GamePlay();
         if(pause%2!=0){
             PauseWindow();
         }
@@ -270,6 +289,10 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     // place your own initialization codes here.
+
+    PopulateSprite();
+    iSetTimer(100, UpdateSprite);
+
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
 }
