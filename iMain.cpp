@@ -33,6 +33,13 @@ void UpdateSprite(){
     SpriteNum = (SpriteNum + 1) % 6;
 }
 
+void SpriteFall(){
+    BirdY -= 5;
+    if (BirdY < 0) {
+        // game over code
+    }
+}
+
 void GamePlay(){
     iShowImage(BirdX, BirdY, BirdImage[SpriteNum]);
 }
@@ -205,13 +212,13 @@ void iMouse(int button, int state, int mx, int my){
                 GameState = 1;      //back to main menu
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
-                level = 1;      //easy
+                level = 1; BirdY = 250;      //easy
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
-                level = 2;      //medium
+                level = 2; BirdY = 250;      //medium
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
-                level = 3;      //hard
+                level = 3; BirdY = 250;      //hard
             }
         }
 
@@ -258,6 +265,10 @@ void iKeyboard(unsigned char key)
     case '\r':
         GameState = 1;
         break;
+    case ' ':
+        if (GameState == 2 && level > 0 && pause % 2 == 0) {
+            BirdY += 100; 
+        }   
     default:
         break;
     }
@@ -291,7 +302,9 @@ int main(int argc, char *argv[])
     // place your own initialization codes here.
 
     PopulateSprite();
-    iSetTimer(100, UpdateSprite);
+    int SpriteTimer = iSetTimer(100, UpdateSprite);
+
+    int BirdFallTimer = iSetTimer(1, SpriteFall);
 
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
