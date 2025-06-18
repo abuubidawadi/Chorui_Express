@@ -4,8 +4,9 @@
 #define SCREEN_HEIGHT 600
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
-int BirdX = 150, BirdY = 250, SpriteNum = 0;
-char BirdImage[6][32];
+int BirdX = 150, BirdY = 250;
+Image BirdImage[6];
+Sprite BirdSprite;
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -23,25 +24,26 @@ void PauseWindow(){
     iShowImage(0, 0, "PauseWindow.png");
 }
 
-void PopulateSprite(){
-    for (int i = 0; i < 6; i++){
-        sprintf(BirdImage[i], "Sprite_%d.png", i);
-    }
+void LoadSprite(){
+    iInitSprite(&BirdSprite, -1);
+	iLoadFramesFromFolder(BirdImage, "Sprites");
+	iChangeSpriteFrames(&BirdSprite, BirdImage, 6);
+    iSetSpritePosition(&BirdSprite, BirdX, BirdY);
 }
 
-void UpdateSprite(){
-    SpriteNum = (SpriteNum + 1) % 6;
+void iAnim(){
+	iAnimateSprite(&BirdSprite);
 }
 
 void SpriteFall(){
-    BirdY -= 5;
-    if (BirdY < 0) {
+    BirdSprite.y -= 5;
+    if (BirdSprite.y < 0) {
         // game over code
     }
 }
 
 void GamePlay(){
-    iShowImage(BirdX, BirdY, BirdImage[SpriteNum]);
+    iShowSprite(&BirdSprite);
 }
 
 void LevelEasy(){
@@ -212,13 +214,13 @@ void iMouse(int button, int state, int mx, int my){
                 GameState = 1;      //back to main menu
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
-                level = 1; BirdY = 250;      //easy
+                level = 1; BirdSprite.y = 250;      //easy
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
-                level = 2; BirdY = 250;      //medium
+                level = 2; BirdSprite.y = 250;      //medium
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
-                level = 3; BirdY = 250;      //hard
+                level = 3; BirdSprite.y = 250;      //hard
             }
         }
 
@@ -267,7 +269,7 @@ void iKeyboard(unsigned char key)
         break;
     case ' ':
         if (GameState == 2 && level > 0 && pause % 2 == 0) {
-            BirdY += 100; 
+            BirdSprite.y += 100; 
         }   
     default:
         break;
@@ -301,8 +303,8 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
     // place your own initialization codes here.
 
-    PopulateSprite();
-    int SpriteTimer = iSetTimer(100, UpdateSprite);
+    LoadSprite();
+    int SpriteTimer = iSetTimer(100, iAnim);
 
     int BirdFallTimer = iSetTimer(1, SpriteFall);
 
