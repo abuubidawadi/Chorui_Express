@@ -4,9 +4,8 @@
 #define SCREEN_HEIGHT 600
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
-int BirdX = 150, BirdY = 250;
-Image BirdImage[6];
-Sprite BirdSprite;
+Image BirdImage[6], ObstacleImage[1];
+Sprite BirdSprite, ObstacleSprite;
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -28,7 +27,12 @@ void LoadSprite(){
     iInitSprite(&BirdSprite, -1);
 	iLoadFramesFromFolder(BirdImage, "Sprites");
 	iChangeSpriteFrames(&BirdSprite, BirdImage, 6);
-    iSetSpritePosition(&BirdSprite, BirdX, BirdY);
+    iSetSpritePosition(&BirdSprite, 150, 250);
+
+    iInitSprite(&ObstacleSprite, -1);
+	iLoadFramesFromFolder(ObstacleImage, "Obstacles");
+	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
+    iSetSpritePosition(&ObstacleSprite, -200, 0);
 }
 
 void iAnim(){
@@ -42,8 +46,18 @@ void SpriteFall(){
     }
 }
 
+void ObstacleMove(){
+    ObstacleSprite.x -= 5;
+}
+
 void GamePlay(){
     iShowSprite(&BirdSprite);
+    iShowSprite(&ObstacleSprite);
+
+    if (iCheckCollision(&BirdSprite, &ObstacleSprite)) {
+        iSetColor(0, 0, 0);
+        iText(100, 300, "Collision Detected", GLUT_BITMAP_TIMES_ROMAN_24);
+    }
 }
 
 void LevelEasy(){
@@ -214,13 +228,13 @@ void iMouse(int button, int state, int mx, int my){
                 GameState = 1;      //back to main menu
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
-                level = 1; BirdSprite.y = 250;      //easy
+                level = 1; BirdSprite.y = 250; ObstacleSprite.x = 800;      //easy
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
-                level = 2; BirdSprite.y = 250;      //medium
+                level = 2; BirdSprite.y = 250; ObstacleSprite.x = 800;      //medium
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
-                level = 3; BirdSprite.y = 250;      //hard
+                level = 3; BirdSprite.y = 250; ObstacleSprite.x = 800;      //hard
             }
         }
 
@@ -307,6 +321,8 @@ int main(int argc, char *argv[])
     int SpriteTimer = iSetTimer(100, iAnim);
 
     int BirdFallTimer = iSetTimer(1, SpriteFall);
+
+    int ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
 
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
