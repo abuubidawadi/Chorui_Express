@@ -48,6 +48,7 @@ void SpriteFall(){
 
 void ObstacleMove(){
     ObstacleSprite.x -= 5;
+        if(ObstacleSprite.x < -4473) ObstacleSprite.x = 0;
 }
 
 void GamePlay(){
@@ -283,7 +284,7 @@ void iKeyboard(unsigned char key)
         break;
     case ' ':
         if (GameState == 2 && level > 0 && pause % 2 == 0) {
-            BirdSprite.y += 100; 
+            BirdSprite.y += 50; 
         }   
     default:
         break;
