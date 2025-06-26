@@ -48,7 +48,7 @@ void SpriteFall(){
 
 void ObstacleMove(){
     ObstacleSprite.x -= 5;
-        if(ObstacleSprite.x < -4473) ObstacleSprite.x = 0;
+        if(ObstacleSprite.x < -4713) ObstacleSprite.x = 600;
 }
 
 void GamePlay(){
