@@ -4,8 +4,8 @@
 #define SCREEN_HEIGHT 600
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
-Image BirdImage[6], ObstacleImage[1];
-Sprite BirdSprite, ObstacleSprite;
+Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
+Sprite BirdSprite, ObstacleSprite, EnemySprite;
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -33,10 +33,16 @@ void LoadSprite(){
 	iLoadFramesFromFolder(ObstacleImage, "Obstacles");
 	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
     iSetSpritePosition(&ObstacleSprite, -200, 0);
+
+    iInitSprite(&EnemySprite, -1);
+	iLoadFramesFromFolder(EnemyImage, "enemy");
+	iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
+    iSetSpritePosition(&EnemySprite, 550, 250);
 }
 
 void iAnim(){
 	iAnimateSprite(&BirdSprite);
+    iAnimateSprite(&EnemySprite);
 }
 
 void SpriteFall(){
@@ -54,6 +60,7 @@ void ObstacleMove(){
 void GamePlay(){
     iShowSprite(&BirdSprite);
     iShowSprite(&ObstacleSprite);
+    iShowSprite(&EnemySprite);
 
     if (iCheckCollision(&BirdSprite, &ObstacleSprite)) {
         iSetColor(0, 0, 0);
