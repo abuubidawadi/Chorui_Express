@@ -458,9 +458,6 @@ int main(int argc, char *argv[])
 
     int EnemyMoveTimer = iSetTimer(10, EnemyMove);
 
-
-    int ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
-
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
 }
