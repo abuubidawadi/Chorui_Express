@@ -130,22 +130,23 @@ void GamePlay(){
     iShowSprite(&BirdSprite);
     iShowSprite(&ObstacleSprite);
     iShowSprite(&EnemySprite);
-    iShowSprite(&EnemySprite);
 
 
     if (iCheckCollision(&BirdSprite, &ObstacleSprite) || iCheckCollision(&BirdSprite, &EnemySprite)) {
         GameOver();
     }
-iSetColor(0, 0, 0);
-char scoreText[20];
-sprintf(scoreText, "Score: %d", score);
-iText(20, 50, scoreText, GLUT_BITMAP_HELVETICA_18);
 
-char highScoreText[30];
-sprintf(highScoreText, "High Score: %d", highScore);
-iText(20, 20, highScoreText, GLUT_BITMAP_HELVETICA_18);
+    //score and name
+    iSetColor(0, 0, 0);
+    char scoreText[20];
+    sprintf(scoreText, "Score: %d", score);
+    iText(20, 50, scoreText, GLUT_BITMAP_HELVETICA_18);
 
-iText(20, 80, playerName, GLUT_BITMAP_HELVETICA_18);
+    char highScoreText[30];
+    sprintf(highScoreText, "High Score: %d", highScore);
+    iText(20, 20, highScoreText, GLUT_BITMAP_HELVETICA_18);
+
+    iText(20, 80, playerName, GLUT_BITMAP_HELVETICA_18);
 
 }
 
