@@ -4,8 +4,19 @@
 #define SCREEN_HEIGHT 600
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
-int BirdX = 150, BirdY = 250, SpriteNum = 0;
-char BirdImage[6][32];
+Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
+Sprite BirdSprite, ObstacleSprite, EnemySprite;
+
+int score = 0;
+int highScore = 0;
+int obstacleSpeed = 5;
+int enemySpeed = 4;
+int gravity = 5;
+int jumpSpeed = 50;
+char playerName[30] = "";
+int typingName = 0;
+
+
 
 void HomePage(){
     iShowImage(0, 0, "HomePage.jpg");
@@ -23,25 +34,119 @@ void PauseWindow(){
     iShowImage(0, 0, "PauseWindow.png");
 }
 
-void PopulateSprite(){
-    for (int i = 0; i < 6; i++){
-        sprintf(BirdImage[i], "Sprite_%d.png", i);
+void LoadSprite(){
+    iInitSprite(&BirdSprite, -1);
+	iLoadFramesFromFolder(BirdImage, "Sprites");
+	iChangeSpriteFrames(&BirdSprite, BirdImage, 6);
+    iSetSpritePosition(&BirdSprite, 150, 250);
+
+    iInitSprite(&ObstacleSprite, -1);
+	iLoadFramesFromFolder(ObstacleImage, "Obstacles");
+	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
+    iSetSpritePosition(&ObstacleSprite, -200, 0);
+
+    iInitSprite(&EnemySprite, -1);
+	iLoadFramesFromFolder(EnemyImage, "enemy");
+	iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
+    iSetSpritePosition(&EnemySprite, 550, 250);
+}
+
+void SetDifficultyParameters() {
+    if(level == 1){         // Easy
+        obstacleSpeed = 4;
+        enemySpeed = 3;
+        gravity = 4;
+        jumpSpeed = 60;
+    }
+    else if(level == 2){    // Medium
+        obstacleSpeed = 6;
+        enemySpeed = 5;
+        gravity = 6;
+        jumpSpeed = 50;
+    }
+    else if(level == 3){    // Hard
+        obstacleSpeed = 8;
+        enemySpeed = 7;
+        gravity = 8;
+        jumpSpeed = 45;
     }
 }
 
-void UpdateSprite(){
-    SpriteNum = (SpriteNum + 1) % 6;
+
+void iAnim(){
+	iAnimateSprite(&BirdSprite);
+    iAnimateSprite(&EnemySprite);
 }
+void GameOver() {
+    if(score > highScore) highScore = score;
+    GameState = 1;
+    level = 0;
+    pause = 0;
+    score = 0;
+    BirdSprite.x = 150;
+    BirdSprite.y = 250;
+    ObstacleSprite.x = 1000;
+    ObstacleSprite.y = 0;
+    EnemySprite.x = 1200;
+    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
+}
+
 
 void SpriteFall(){
-    BirdY -= 5;
-    if (BirdY < 0) {
-        // game over code
+    if(level > 0 && pause % 2 == 0){
+        BirdSprite.y -= gravity;
+        if (BirdSprite.y < 0) {
+            GameOver();
+        }
     }
 }
 
+
+void ObstacleMove(){
+    if(level > 0 && pause % 2 == 0){
+        ObstacleSprite.x -= obstacleSpeed;
+        if(ObstacleSprite.x < -200) {
+            ObstacleSprite.x = 800;
+            score += 1;
+        }
+    }
+}
+
+
+void EnemyMove() {
+    if (level > 0 && pause % 2 == 0) {
+        EnemySprite.x -= enemySpeed;
+        if (EnemySprite.x < -200) {
+            EnemySprite.x = SCREEN_WIDTH + 300;
+            EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
+            score += 1;
+        }
+    }
+}
+
+
+
 void GamePlay(){
-    iShowImage(BirdX, BirdY, BirdImage[SpriteNum]);
+    iShowSprite(&BirdSprite);
+    iShowSprite(&ObstacleSprite);
+    iShowSprite(&EnemySprite);
+    iShowSprite(&EnemySprite);
+
+
+    if (iCheckCollision(&BirdSprite, &ObstacleSprite) || iCheckCollision(&BirdSprite, &EnemySprite)) {
+        GameOver();
+    }
+iSetColor(0, 0, 0);
+char scoreText[20];
+sprintf(scoreText, "Score: %d", score);
+iText(20, 50, scoreText, GLUT_BITMAP_HELVETICA_18);
+
+char highScoreText[30];
+sprintf(highScoreText, "High Score: %d", highScore);
+iText(20, 20, highScoreText, GLUT_BITMAP_HELVETICA_18);
+
+iText(20, 80, playerName, GLUT_BITMAP_HELVETICA_18);
+
 }
 
 void LevelEasy(){
@@ -87,6 +192,13 @@ void Settings(){
     }
     else if(bg_music==0 && bird_sound==0){
         iShowImage(0, 0, "Settings_off_off.jpg");
+    }
+    iSetColor(0, 0, 0);
+    //iText(50, 100, "Player Name:", GLUT_BITMAP_HELVETICA_18);
+    iText(465, 215, playerName, GLUT_BITMAP_HELVETICA_18);
+
+    if(typingName){
+        iText(465 + 10 * strlen(playerName), 215, "|", GLUT_BITMAP_HELVETICA_18); // cursor
     }
 }
 
@@ -145,7 +257,7 @@ function iMouseMove() is called when the user moves the mouse.
 */
 void iMouseMove(int mx, int my)
 {
-    // place your codes here
+    printf("x = %d, y= %d\n",mx,my);
 }
 
 /*
@@ -205,6 +317,12 @@ void iMouse(int button, int state, int mx, int my){
             else if(mx > 418 && mx < 492 && my > 269 && my < 317){
                 bird_sound = 1;
             }
+
+            // Check click in name area
+            else if(mx > 465 && mx < 700 && my > 215 && my < 235){
+                typingName = 1;
+            }
+
         }
 
         else if(GameState==2 && level==0){      //in difficulty page
@@ -212,13 +330,16 @@ void iMouse(int button, int state, int mx, int my){
                 GameState = 1;      //back to main menu
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
-                level = 1; BirdY = 250;      //easy
+                level = 1; BirdSprite.y = 250; ObstacleSprite.x = 800;      //easy
+                SetDifficultyParameters();      
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
-                level = 2; BirdY = 250;      //medium
+                level = 2; BirdSprite.y = 250; ObstacleSprite.x = 800;      //medium
+                SetDifficultyParameters();
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
-                level = 3; BirdY = 250;      //hard
+                level = 3; BirdSprite.y = 250; ObstacleSprite.x = 800;      //hard
+                SetDifficultyParameters();
             }
         }
 
@@ -232,6 +353,11 @@ void iMouse(int button, int state, int mx, int my){
                             }
                             else if(mx > 385 && mx < 694 && my > 277 && my < 327){      //restart
                                 pause++;
+                                score = 0;
+                                BirdSprite.y = 250;
+                                ObstacleSprite.x = 800;
+                                EnemySprite.x = 1200;
+                                EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
                             }
                             else if(mx > 385 && mx < 694 && my > 210 && my < 252){      //exit
                                 GameState = 1; level = 0; pause++;
@@ -267,11 +393,33 @@ void iKeyboard(unsigned char key)
         break;
     case ' ':
         if (GameState == 2 && level > 0 && pause % 2 == 0) {
-            BirdY += 100; 
+            BirdSprite.y += jumpSpeed; 
+            if(BirdSprite.y > SCREEN_HEIGHT - 100) BirdSprite.y = SCREEN_HEIGHT - 100;
         }   
     default:
         break;
     }
+    //name input handling
+    if(typingName && GameState == 4){
+    if(key == '\r'){ // Enter finishes typing
+        typingName = 0;
+    }
+    else if((key >= 32 && key <= 126) && strlen(playerName) < 28){
+        int len = strlen(playerName);
+        playerName[len] = key;
+        playerName[len+1] = '\0';
+    }
+    }
+    else if(key == 8 && typingName && GameState == 4){ // Backspace
+    int len = strlen(playerName);
+    if(len > 0){
+        playerName[len-1] = '\0';
+    }
+    }
+    else if(key == 27){ // ESC
+            typingName = 0;
+        }
+
 }
 
 /*
@@ -301,10 +449,15 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
     // place your own initialization codes here.
 
-    PopulateSprite();
-    int SpriteTimer = iSetTimer(100, UpdateSprite);
+    LoadSprite();
+    int SpriteTimer = iSetTimer(100, iAnim);
 
-    int BirdFallTimer = iSetTimer(1, SpriteFall);
+    int BirdFallTimer = iSetTimer(30, SpriteFall);
+
+    int ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
+
+    int EnemyMoveTimer = iSetTimer(10, EnemyMove);
+
 
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
