@@ -19,34 +19,34 @@ int typingName = 0;
 
 
 void HomePage(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
 }
 
 void MainMenuPage(){
-    iShowImage(0, 0, "MainMenuPage.jpg");
+    iShowImage(0, 0, "assets/images/pages/MainMenuPage.jpg");
 }
 
 void GameStart(){
-    iShowImage(0, 0, "Difficulty.jpg");
+    iShowImage(0, 0, "assets/images/pages/Difficulty.jpg");
 }
 
 void PauseWindow(){
-    iShowImage(0, 0, "PauseWindow.png");
+    iShowImage(0, 0, "assets/images/pages/PauseWindow.png");
 }
 
 void LoadSprite(){
     iInitSprite(&BirdSprite, -1);
-	iLoadFramesFromFolder(BirdImage, "Sprites");
+	iLoadFramesFromFolder(BirdImage, "assets/images/Sprites");
 	iChangeSpriteFrames(&BirdSprite, BirdImage, 6);
     iSetSpritePosition(&BirdSprite, 150, 250);
 
     iInitSprite(&ObstacleSprite, -1);
-	iLoadFramesFromFolder(ObstacleImage, "Obstacles");
+	iLoadFramesFromFolder(ObstacleImage, "assets/images/Obstacles");
 	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
     iSetSpritePosition(&ObstacleSprite, -200, 0);
 
     iInitSprite(&EnemySprite, -1);
-	iLoadFramesFromFolder(EnemyImage, "enemy");
+	iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
 	iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
     iSetSpritePosition(&EnemySprite, 550, 250);
 }
@@ -54,21 +54,21 @@ void LoadSprite(){
 void SetDifficultyParameters() {
     if(level == 1){         // Easy
         obstacleSpeed = 4;
-        enemySpeed = 3;
+        enemySpeed = 8;
         gravity = 4;
-        jumpSpeed = 60;
+        jumpSpeed = 50;
     }
     else if(level == 2){    // Medium
-        obstacleSpeed = 6;
-        enemySpeed = 5;
-        gravity = 6;
+        obstacleSpeed = 5;
+        enemySpeed = 10;
+        gravity = 4;
         jumpSpeed = 50;
     }
     else if(level == 3){    // Hard
-        obstacleSpeed = 8;
-        enemySpeed = 7;
-        gravity = 8;
-        jumpSpeed = 45;
+        obstacleSpeed = 6;
+        enemySpeed = 12;
+        gravity = 4;
+        jumpSpeed = 50;
     }
 }
 
@@ -78,7 +78,7 @@ void iAnim(){
     iAnimateSprite(&EnemySprite);
 }
 void GameOver() {
-    if(score > highScore) highScore = score;
+    /*if(score > highScore) highScore = score;
     GameState = 1;
     level = 0;
     pause = 0;
@@ -88,14 +88,15 @@ void GameOver() {
     ObstacleSprite.x = 1000;
     ObstacleSprite.y = 0;
     EnemySprite.x = 1200;
-    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
+    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);*/
+    iText(100, 300, "Collision Detected", GLUT_BITMAP_TIMES_ROMAN_24);
 }
 
 
 void SpriteFall(){
     if(level > 0 && pause % 2 == 0){
         BirdSprite.y -= gravity;
-        if (BirdSprite.y < 0) {
+        if (BirdSprite.y < 0 || BirdSprite.y > 600) {
             GameOver();
         }
     }
@@ -105,10 +106,8 @@ void SpriteFall(){
 void ObstacleMove(){
     if(level > 0 && pause % 2 == 0){
         ObstacleSprite.x -= obstacleSpeed;
-        if(ObstacleSprite.x < -200) {
-            ObstacleSprite.x = 800;
-            score += 1;
-        }
+        score++;
+            if(ObstacleSprite.x < -15276) ObstacleSprite.x = 1000;
     }
 }
 
@@ -116,10 +115,9 @@ void ObstacleMove(){
 void EnemyMove() {
     if (level > 0 && pause % 2 == 0) {
         EnemySprite.x -= enemySpeed;
-        if (EnemySprite.x < -200) {
-            EnemySprite.x = SCREEN_WIDTH + 300;
+        if (EnemySprite.x < -300) {
+            EnemySprite.x = SCREEN_WIDTH + 500;
             EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
-            score += 1;
         }
     }
 }
@@ -151,7 +149,7 @@ void GamePlay(){
 }
 
 void LevelEasy(){
-    iShowImage(0, 0, "EasyBG.jpg");
+    iShowImage(0, 0, "assets/images/pages/EasyBG.jpg");
     GamePlay();
         if(pause%2!=0){
             PauseWindow();
@@ -160,7 +158,7 @@ void LevelEasy(){
 }
 
 void LevelMedium(){
-    iShowImage(0, 0, "MediumBG.jpg");
+    iShowImage(0, 0, "assets/images/pages/MediumBG.jpg");
     GamePlay();
         if(pause%2!=0){
             PauseWindow();
@@ -169,7 +167,7 @@ void LevelMedium(){
 }
 
 void LevelHard(){
-    iShowImage(0, 0, "HardBG.jpg");
+    iShowImage(0, 0, "assets/images/pages/HardBG.jpg");
     GamePlay();
         if(pause%2!=0){
             PauseWindow();
@@ -178,22 +176,23 @@ void LevelHard(){
 }
 
 void Instructions(){
-    iShowImage(0, 0, "Instructions.jpg");
+    iShowImage(0, 0, "assets/images/pages/Instructions.jpg");
 }
 
 void Settings(){
     if(bg_music==1 && bird_sound==1){
-        iShowImage(0, 0, "Settings_on_on.jpg");
+        iShowImage(0, 0, "assets/images/pages/Settings_on_on.jpg");
     }
     else if(bg_music==0 && bird_sound==1){
-        iShowImage(0, 0, "Settings_off_on.jpg");
+        iShowImage(0, 0, "assets/images/pages/Settings_off_on.jpg");
     }
     else if(bg_music==1 && bird_sound==0){
-        iShowImage(0, 0, "Settings_on_off.jpg");
+        iShowImage(0, 0, "assets/images/pages/Settings_on_off.jpg");
     }
     else if(bg_music==0 && bird_sound==0){
-        iShowImage(0, 0, "Settings_off_off.jpg");
+        iShowImage(0, 0, "assets/images/pages/Settings_off_off.jpg");
     }
+
     iSetColor(0, 0, 0);
     //iText(50, 100, "Player Name:", GLUT_BITMAP_HELVETICA_18);
     iText(465, 215, playerName, GLUT_BITMAP_HELVETICA_18);
@@ -204,11 +203,11 @@ void Settings(){
 }
 
 void HighScore(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
 }
 
 void Exit(){
-    iShowImage(0, 0, "HomePage.jpg");
+    iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
 }
 
 /*
@@ -395,7 +394,6 @@ void iKeyboard(unsigned char key)
     case ' ':
         if (GameState == 2 && level > 0 && pause % 2 == 0) {
             BirdSprite.y += jumpSpeed; 
-            if(BirdSprite.y > SCREEN_HEIGHT - 100) BirdSprite.y = SCREEN_HEIGHT - 100;
         }   
     default:
         break;
