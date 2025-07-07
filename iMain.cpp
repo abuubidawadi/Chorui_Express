@@ -1,9 +1,10 @@
 #include "iGraphics.h"
+#include "iSound.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
 
@@ -216,6 +217,9 @@ function iDraw() is called again and again by the system.
 void iDraw()
 {
     iClear();
+
+    if(bg_music == 1) iResumeSound(BGmusic);
+    else if(bg_music == 0) iPauseSound(BGmusic);
 
     if(GameState==0){
         HomePage();
@@ -456,6 +460,9 @@ int main(int argc, char *argv[])
     int ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
 
     int EnemyMoveTimer = iSetTimer(10, EnemyMove);
+
+    iInitializeSound();
+    BGmusic = iPlaySound("assets/sounds/BGmusic.wav", true, 50);
 
     iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
