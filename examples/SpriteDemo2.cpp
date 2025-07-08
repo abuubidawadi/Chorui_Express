@@ -13,7 +13,7 @@ int pic_x, pic_y;
 int idle_idx = 0;
 int jump_idx = 0;
 int walk_idx = 0;
-int state = IDLE;
+int m_state = IDLE;
 char monster_idle[18][100];
 char monster_jump[6][100];
 char monster_walk[24][100];
@@ -38,7 +38,7 @@ void populate_monster_images()
 
 void update_monster()
 {
-    switch (state)
+    switch (m_state)
     {
     case IDLE:
         monster_image = monster_idle[idle_idx];
@@ -53,7 +53,7 @@ void update_monster()
         jump_idx = (jump_idx + 1) % 6;
         if (jump_idx == 0)
         {
-            state = IDLE;
+            m_state = IDLE;
         }
         break;
     }
@@ -67,6 +67,7 @@ void iDraw()
 
     iClear();
     iShowImage(pic_x, pic_y, monster_image);
+    iShowSpeed(0, 0);
     // iShowBMP(pic_x, pic_y, "wheel.bmp");
 }
 
@@ -117,7 +118,7 @@ void iMouseWheel(int dir, int mx, int my)
     function iKeyboard() is called whenever the user hits a key in keyboard.
     key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key)
+void iKeyboard(unsigned char key, int state)
 {
     if (key == 'x')
     {
@@ -136,30 +137,29 @@ void iKeyboard(unsigned char key)
     GLUT_KEY_LEFT, GLUT_KEY_UP, GLUT_KEY_RIGHT, GLUT_KEY_DOWN, GLUT_KEY_PAGE UP,
     GLUT_KEY_PAGE DOWN, GLUT_KEY_HOME, GLUT_KEY_END, GLUT_KEY_INSERT
 */
-void iSpecialKeyboard(unsigned char key)
+void iSpecialKeyboard(unsigned char key, int state)
 {
-
     if (key == GLUT_KEY_END)
     {
         exit(0);
     }
     if (key == GLUT_KEY_LEFT)
     {
-        pic_x--;
+        pic_x -= 2;
     }
     if (key == GLUT_KEY_RIGHT)
     {
-        pic_x++;
-        state = WALK;
+        pic_x += 2;
+        m_state = WALK;
     }
     if (key == GLUT_KEY_UP)
     {
-        pic_y++;
-        state = JUMP;
+        pic_y += 2;
+        m_state = JUMP;
     }
     if (key == GLUT_KEY_DOWN)
     {
-        pic_y--;
+        pic_y -= 2;
     }
     // place your codes for other keys here
 }
@@ -167,11 +167,11 @@ void iSpecialKeyboard(unsigned char key)
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    // place your own initialization codes here.
+
     pic_x = 0;
     pic_y = 0;
     populate_monster_images();
     iSetTimer(100, update_monster);
-    iInitialize(900, 900, "SpriteDemo");
+    iOpenWindow(900, 900, "SpriteDemo");
     return 0;
 }

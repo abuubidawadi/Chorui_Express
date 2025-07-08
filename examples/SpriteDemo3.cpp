@@ -9,7 +9,7 @@ Sprite sprite;
 
 void loadResources()
 {
-	iInitSprite(&sprite, -1);
+	iInitSprite(&sprite);
 	iLoadFramesFromFolder(frames, "assets/images/sprites/Golem_2/Walking");
 	iChangeSpriteFrames(&sprite, frames, 24);
 	iSetSpritePosition(&sprite, -200, -110);
@@ -89,7 +89,7 @@ void iMouse(int button, int state, int mx, int my)
 	function iKeyboard() is called whenever the user hits a key in keyboard.
 	key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key)
+void iKeyboard(unsigned char key, int state)
 {
 	if (key == 'x')
 	{
@@ -110,7 +110,7 @@ void iKeyboard(unsigned char key)
 */
 
 int direction = 1;
-void iSpecialKeyboard(unsigned char key)
+void iSpecialKeyboard(unsigned char key, int state)
 {
 	if (key == GLUT_KEY_END)
 	{
@@ -156,6 +156,6 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv);
 	loadResources();
 	iSetTimer(100, iAnim);
-	iInitialize(800, 800, "SpriteDemo");
+	iOpenWindow(800, 800, "SpriteDemo");
 	return 0;
 }

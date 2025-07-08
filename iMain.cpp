@@ -1,5 +1,6 @@
 #include "iGraphics.h"
 #include "iSound.h"
+#include "iFont.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
@@ -36,17 +37,17 @@ void PauseWindow(){
 }
 
 void LoadSprite(){
-    iInitSprite(&BirdSprite, -1);
+    iInitSprite(&BirdSprite);
 	iLoadFramesFromFolder(BirdImage, "assets/images/Sprites");
 	iChangeSpriteFrames(&BirdSprite, BirdImage, 6);
     iSetSpritePosition(&BirdSprite, 150, 250);
 
-    iInitSprite(&ObstacleSprite, -1);
+    iInitSprite(&ObstacleSprite);
 	iLoadFramesFromFolder(ObstacleImage, "assets/images/Obstacles");
 	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
     iSetSpritePosition(&ObstacleSprite, -200, 0);
 
-    iInitSprite(&EnemySprite, -1);
+    iInitSprite(&EnemySprite);
 	iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
 	iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
     iSetSpritePosition(&EnemySprite, 550, 250);
@@ -90,7 +91,7 @@ void GameOver() {
     ObstacleSprite.y = 0;
     EnemySprite.x = 1200;
     EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);*/
-    iText(100, 300, "Collision Detected", GLUT_BITMAP_TIMES_ROMAN_24);
+    iShowText(150, 70, "Hello OpenGL!", "assets/fonts/arial.ttf", 48);
 }
 
 
@@ -130,8 +131,9 @@ void GamePlay(){
     iShowSprite(&ObstacleSprite);
     iShowSprite(&EnemySprite);
 
-
-    if (iCheckCollision(&BirdSprite, &ObstacleSprite) || iCheckCollision(&BirdSprite, &EnemySprite)) {
+    int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
+    int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
+    if (count / (20.0 * visibleCount) > 0.01) {
         GameOver();
     }
 
@@ -388,7 +390,7 @@ void iMouseWheel(int dir, int mx, int my)
 function iKeyboard() is called whenever the user hits a key in keyboard.
 key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key)
+void iKeyboard(unsigned char key, int state)
 {
     switch (key)
     {
@@ -434,7 +436,7 @@ GLUT_KEY_F7, GLUT_KEY_F8, GLUT_KEY_F9, GLUT_KEY_F10, GLUT_KEY_F11,
 GLUT_KEY_F12, GLUT_KEY_LEFT, GLUT_KEY_UP, GLUT_KEY_RIGHT, GLUT_KEY_DOWN,
 GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN, GLUT_KEY_HOME, GLUT_KEY_END,
 GLUT_KEY_INSERT */
-void iSpecialKeyboard(unsigned char key)
+void iSpecialKeyboard(unsigned char key, int state)
 {
     switch (key)
     {
@@ -461,9 +463,11 @@ int main(int argc, char *argv[])
 
     int EnemyMoveTimer = iSetTimer(10, EnemyMove);
 
+    iInitializeFont();
+
     iInitializeSound();
     BGmusic = iPlaySound("assets/sounds/BGmusic.wav", true, 50);
 
-    iInitialize(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
+    iOpenWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
 }
