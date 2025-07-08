@@ -80,8 +80,8 @@ void iAnim(){
     iAnimateSprite(&EnemySprite);
 }
 void GameOver() {
-    /*if(score > highScore) highScore = score;
-    GameState = 1;
+    if(score > highScore) highScore = score;
+    iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
     level = 0;
     pause = 0;
     score = 0;
@@ -90,8 +90,7 @@ void GameOver() {
     ObstacleSprite.x = 1000;
     ObstacleSprite.y = 0;
     EnemySprite.x = 1200;
-    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);*/
-    iShowText(150, 70, "Hello OpenGL!", "assets/fonts/arial.ttf", 48);
+    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
 }
 
 
