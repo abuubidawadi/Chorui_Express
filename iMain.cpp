@@ -82,7 +82,7 @@ void iAnim(){
 void GameOver() {
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
-    level = 0;
+    /*level = 0;
     pause = 0;
     score = 0;
     BirdSprite.x = 150;
@@ -90,7 +90,7 @@ void GameOver() {
     ObstacleSprite.x = 1000;
     ObstacleSprite.y = 0;
     EnemySprite.x = 1200;
-    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
+    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);*/
 }
 
 
@@ -224,6 +224,9 @@ void iDraw()
 
     if(GameState==0){
         HomePage();
+        iSetColor(0, 0, 0);
+        iShowText(220, 120, "Avgvi bvg", "assets/fonts/gamefont.ttf", 48);
+
     }
     else if(GameState==1){
         MainMenuPage(); 
@@ -254,6 +257,7 @@ void iDraw()
     else if(GameState==5){
         Exit();
     }
+
 }
 
 /*
