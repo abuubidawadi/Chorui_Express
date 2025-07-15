@@ -95,8 +95,11 @@ void GameOver() {
 void SpriteFall(){
     if(level > 0 && pause % 2 == 0){
         BirdSprite.y -= gravity;
-        if (BirdSprite.y < 0 || BirdSprite.y > 600) {
+        if (BirdSprite.y < -50) {
             IsGameOver = 1;
+        }
+        else if (BirdSprite.y > SCREEN_HEIGHT - 50) {
+            BirdSprite.y = SCREEN_HEIGHT - 50;
         }
     }
 }
@@ -312,7 +315,19 @@ void iMouse(int button, int state, int mx, int my){
 
         if(GameState==1){       //in main menu        
             if (mx > 387 && mx < 692 && my > 357 && my < 405){
+                // Reset game variables when starting a new game
                 GameState = 2;      //start game
+                level = 0;
+                pause = 0;
+                IsGameOver = 0;
+                PausePossible = 1;
+                score = 0;
+                BirdSprite.y = 250;
+                BirdSprite.x = 150;
+                ObstacleSprite.x = 800;
+                ObstacleSprite.y = 0;
+                EnemySprite.x = 1200;
+                EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
             }
             else if (mx > 387 && mx < 692 && my > 292 && my < 346){
                 GameState = 3;      //instructions
@@ -379,7 +394,7 @@ void iMouse(int button, int state, int mx, int my){
             }
         }
 
-        else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 1){   //name input
+        /*else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 1){   //name input
                 if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
                     NameInput = 0;
                     IsGameOver = 0;
@@ -388,8 +403,9 @@ void iMouse(int button, int state, int mx, int my){
                     NameInput = 0;
                     IsGameOver = 0;
                 }
-        }
-        else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 0){      //in any level
+        }*/
+
+        else if(GameState==2 && level>0 && PausePossible==1){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
                     pause++;
                 }
