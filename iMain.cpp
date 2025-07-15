@@ -5,7 +5,7 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
 
@@ -159,6 +159,10 @@ void GamePlay(){
 
 }
 
+void NameInputWindow(){
+    iShowImage(0, 0, "assets/images/pages/NameInput.jpg");
+}
+
 void LevelEasy(){
     iShowImage(0, 0, "assets/images/pages/EasyBG.jpg");
     GamePlay();
@@ -242,6 +246,18 @@ void iDraw()
     else if(GameState==2){
         if(level==0){
             GameStart();
+        }
+        else if(level==0 && PausePossible == 1){
+            GamePlay();
+            if(pause%2!=0){
+                PauseWindow();
+            }
+        }
+        else if(level==0 && PausePossible == 0){
+            GamePlay();
+            if(pause%2!=0){
+                PauseWindow();
+            }
         }
         else if(level==1){
             LevelEasy();
@@ -363,7 +379,17 @@ void iMouse(int button, int state, int mx, int my){
             }
         }
 
-        else if(GameState==2 && level>0 && PausePossible==1){      //in any level
+        else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 1){   //name input
+                if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
+                    NameInput = 0;
+                    IsGameOver = 0;
+                }
+                else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
+                    NameInput = 0;
+                    IsGameOver = 0;
+                }
+        }
+        else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 0){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
                     pause++;
                 }
@@ -388,6 +414,7 @@ void iMouse(int button, int state, int mx, int my){
         else if(GameState==2 && level>0 && PausePossible==0){   //after game over
             if(mx > 385 && mx < 694 && my > 243 && my < 297){   //restart
                 IsGameOver = 0;
+                PausePossible = 1;
                 score = 0;
                 BirdSprite.y = 250;
                 ObstacleSprite.x = 800;
@@ -397,6 +424,7 @@ void iMouse(int button, int state, int mx, int my){
             else if(mx > 385 && mx < 694 && my > 180 && my < 222){      //exit
                 GameState = 1; level = 0;
                 IsGameOver = 0;
+                PausePossible = 1;
             }
         }
     }
@@ -427,9 +455,10 @@ void iKeyboard(unsigned char key, int state)
         GameState = 1;
         break;
     case ' ':
-        if (GameState == 2 && level > 0 && pause % 2 == 0) {
+        if (GameState == 2 && level > 0 && pause % 2 == 0 && IsGameOver == 0) {
             BirdSprite.y += jumpSpeed; 
-        }   
+        }
+        break;
     default:
         break;
     }
