@@ -5,9 +5,11 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
+
+int SpriteTimer, BirdFallTimer, ObstacleMoveTimer, EnemyMoveTimer;
 
 int score = 0;
 int highScore = 0;
@@ -82,15 +84,11 @@ void iAnim(){
 void GameOver() {
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
-    /*level = 0;
-    pause = 0;
-    score = 0;
-    BirdSprite.x = 150;
-    BirdSprite.y = 250;
-    ObstacleSprite.x = 1000;
-    ObstacleSprite.y = 0;
-    EnemySprite.x = 1200;
-    EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);*/
+    iPauseTimer(SpriteTimer);
+    iPauseTimer(BirdFallTimer);
+    iPauseTimer(ObstacleMoveTimer);
+    iPauseTimer(EnemyMoveTimer);
+    PausePossible = 0;
 }
 
 
@@ -98,7 +96,7 @@ void SpriteFall(){
     if(level > 0 && pause % 2 == 0){
         BirdSprite.y -= gravity;
         if (BirdSprite.y < 0 || BirdSprite.y > 600) {
-            GameOver();
+            IsGameOver = 1;
         }
     }
 }
@@ -133,7 +131,18 @@ void GamePlay(){
     int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
     int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
     if (count / (20.0 * visibleCount) > 0.01) {
+        IsGameOver = 1;
+    }
+
+    if(IsGameOver == 1){
         GameOver();
+    }
+
+    if(IsGameOver == 0){
+            iResumeTimer(SpriteTimer);
+            iResumeTimer(BirdFallTimer);
+            iResumeTimer(ObstacleMoveTimer);
+            iResumeTimer(EnemyMoveTimer);
     }
 
     //score and name
@@ -225,11 +234,10 @@ void iDraw()
     if(GameState==0){
         HomePage();
         iSetColor(0, 0, 0);
-        iShowText(220, 120, "Avgvi bvg", "assets/fonts/gamefont.ttf", 48);
 
     }
     else if(GameState==1){
-        MainMenuPage(); 
+        MainMenuPage();
     }
     else if(GameState==2){
         if(level==0){
@@ -340,19 +348,22 @@ void iMouse(int button, int state, int mx, int my){
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
                 level = 1; BirdSprite.y = 250; ObstacleSprite.x = 800;      //easy
+                IsGameOver = 0;
                 SetDifficultyParameters();      
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
+                IsGameOver = 0;
                 level = 2; BirdSprite.y = 250; ObstacleSprite.x = 800;      //medium
                 SetDifficultyParameters();
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
+                IsGameOver = 0;
                 level = 3; BirdSprite.y = 250; ObstacleSprite.x = 800;      //hard
                 SetDifficultyParameters();
             }
         }
 
-        else if(GameState==2 && level>0){      //in any level
+        else if(GameState==2 && level>0 && PausePossible==1){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
                     pause++;
                 }
@@ -372,6 +383,21 @@ void iMouse(int button, int state, int mx, int my){
                                 GameState = 1; level = 0; pause++;
                             }
                         }
+        }
+
+        else if(GameState==2 && level>0 && PausePossible==0){   //after game over
+            if(mx > 385 && mx < 694 && my > 243 && my < 297){   //restart
+                IsGameOver = 0;
+                score = 0;
+                BirdSprite.y = 250;
+                ObstacleSprite.x = 800;
+                EnemySprite.x = 1200;
+                EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
+            }
+            else if(mx > 385 && mx < 694 && my > 180 && my < 222){      //exit
+                GameState = 1; level = 0;
+                IsGameOver = 0;
+            }
         }
     }
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
@@ -458,13 +484,13 @@ int main(int argc, char *argv[])
     // place your own initialization codes here.
 
     LoadSprite();
-    int SpriteTimer = iSetTimer(100, iAnim);
+    SpriteTimer = iSetTimer(100, iAnim);
 
-    int BirdFallTimer = iSetTimer(30, SpriteFall);
+    BirdFallTimer = iSetTimer(30, SpriteFall);
 
-    int ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
+    ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
 
-    int EnemyMoveTimer = iSetTimer(10, EnemyMove);
+    EnemyMoveTimer = iSetTimer(10, EnemyMove);
 
     iInitializeFont();
 
