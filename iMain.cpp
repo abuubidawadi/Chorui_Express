@@ -5,7 +5,7 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
 
@@ -104,7 +104,6 @@ void SpriteFall(){
     }
 }
 
-
 void ObstacleMove(){
     if(level > 0 && pause % 2 == 0){
         ObstacleSprite.x -= obstacleSpeed;
@@ -112,7 +111,6 @@ void ObstacleMove(){
             if(ObstacleSprite.x < -15276) ObstacleSprite.x = 1000;
     }
 }
-
 
 void EnemyMove() {
     if (level > 0 && pause % 2 == 0) {
@@ -123,8 +121,6 @@ void EnemyMove() {
         }
     }
 }
-
-
 
 void GamePlay(){
     iShowSprite(&BirdSprite);
@@ -220,8 +216,31 @@ void Settings(){
     }
 }
 
+void HighScoreEasy(){
+    iShowImage(0, 0, "assets/images/pages/EasyHighScore.jpg");
+}
+
+void HighScoreMedium(){
+    iShowImage(0, 0, "assets/images/pages/MediumHighScore.jpg");
+}
+
+void HighScoreHard(){
+    iShowImage(0, 0, "assets/images/pages/HardHighScore.jpg");
+}
+
 void HighScore(){
-    iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
+    if(LevelHighScore==0){
+        iShowImage(0, 0, "assets/images/pages/DifficultyHighScore.jpg");
+    }
+    else if(LevelHighScore==1){
+        HighScoreEasy();
+    }
+    else if(LevelHighScore==2){
+        HighScoreMedium();
+    }
+    else if(LevelHighScore==3){
+        HighScoreHard();
+    }
 }
 
 void Exit(){
@@ -247,7 +266,10 @@ void iDraw()
         MainMenuPage();
     }
     else if(GameState==2){
-        if(level==0){
+        if(level==0 && NameInput == 1){
+            NameInputWindow();
+        }
+        else if(level==0 && NameInput == 0){
             GameStart();
         }
         else if(level==0 && PausePossible == 1){
@@ -317,6 +339,7 @@ void iMouse(int button, int state, int mx, int my){
             if (mx > 387 && mx < 692 && my > 357 && my < 405){
                 // Reset game variables when starting a new game
                 GameState = 2;      //start game
+                NameInput = 1;
                 level = 0;
                 pause = 0;
                 IsGameOver = 0;
@@ -373,7 +396,54 @@ void iMouse(int button, int state, int mx, int my){
 
         }
 
-        else if(GameState==2 && level==0){      //in difficulty page
+        else if(GameState==5){      //in high score
+            if(LevelHighScore==0){
+                if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                    GameState = 1;      //back to main menu
+                }
+                else if(mx > 356 && mx < 645 && my > 296 && my < 371){  //easy
+                    LevelHighScore = 1;
+                }
+                else if(mx > 356 && mx < 645 && my > 192 && my < 265){  //medium
+                    LevelHighScore = 2;
+                }
+                else if(mx > 356 && mx < 645 && my > 94 && my < 166){       //hard
+                    LevelHighScore = 3;
+                }
+            }
+            else if(LevelHighScore==1){
+                if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                    LevelHighScore = 0;  
+                }
+            }
+            else if(LevelHighScore==2){
+                if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                    LevelHighScore = 0;  
+                }
+            }
+            else if(LevelHighScore==3){
+                if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                    LevelHighScore = 0;  
+                }
+            }
+        }
+
+        else if(GameState==6){      //in exit
+            exit(0);
+        }
+
+        else if(GameState==2 && level==0 && NameInput == 1){   //name input
+                if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
+                    NameInput = 0;
+                    IsGameOver = 0;
+                }
+                else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
+                    NameInput = 0;
+                    IsGameOver = 0;
+                }
+        }
+
+        else if(GameState==2 && level==0 && NameInput==0){      //in difficulty page
             if(mx > 845 && mx < 980 && my > 470 && my < 577){
                 GameState = 1;      //back to main menu
             }
@@ -393,17 +463,6 @@ void iMouse(int button, int state, int mx, int my){
                 SetDifficultyParameters();
             }
         }
-
-        /*else if(GameState==2 && level>0 && PausePossible==1 && NameInput == 1){   //name input
-                if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
-                    NameInput = 0;
-                    IsGameOver = 0;
-                }
-                else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
-                    NameInput = 0;
-                    IsGameOver = 0;
-                }
-        }*/
 
         else if(GameState==2 && level>0 && PausePossible==1){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
