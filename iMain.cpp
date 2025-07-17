@@ -5,6 +5,19 @@
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
+#define MAX_LEADERS 10
+#define MAX_NAME_LEN 30
+
+char easyLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
+int easyLeaderScores[MAX_LEADERS];
+
+char mediumLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
+int mediumLeaderScores[MAX_LEADERS];
+
+char hardLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
+int hardLeaderScores[MAX_LEADERS];
+
+
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
@@ -17,8 +30,14 @@ int obstacleSpeed = 5;
 int enemySpeed = 4;
 int gravity = 5;
 int jumpSpeed = 50;
-char playerName[30] = "";
+
 int typingName = 0;
+
+char playerName[100] = "";
+int nameLength = 0;
+//int score = 0; // your game's score variable
+int difficulty = 1; // 1 = Easy, 2 = Medium, 3 = Hard
+
 
 
 
@@ -81,7 +100,87 @@ void iAnim(){
 	iAnimateSprite(&BirdSprite);
     iAnimateSprite(&EnemySprite);
 }
+
+void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char *newName, int newScore) {
+    for (int i = 0; i < max_leaders; i++) {
+        if (newScore > scores[i]) {
+            // Shift down from the end to i
+            for (int j = max_leaders - 1; j > i; j--) {
+                scores[j] = scores[j - 1];
+                strncpy(names[j], names[j - 1], MAX_NAME_LEN);
+            }
+            // Insert new score & name at i
+            scores[i] = newScore;
+            strncpy(names[i], newName, MAX_NAME_LEN - 1);
+            names[i][MAX_NAME_LEN - 1] = '\0';
+            break;
+        }
+    }
+}
+
+
+void AddScore(int level, char *name, int score) {
+    if (level == 1) {
+        InsertScore(easyLeaderNames, easyLeaderScores, MAX_LEADERS, name, score);
+    }
+    else if (level == 2) {
+        InsertScore(mediumLeaderNames, mediumLeaderScores, MAX_LEADERS, name, score);
+    }
+    else if (level == 3) {
+        InsertScore(hardLeaderNames, hardLeaderScores, MAX_LEADERS, name, score);
+    }
+}
+
+void DisplayLeaderboard(int level) {
+    char (*names)[MAX_NAME_LEN];
+    int *scores;
+
+    if (level == 1) {
+        names = easyLeaderNames;
+        scores = easyLeaderScores;
+    }
+    else if (level == 2) {
+        names = mediumLeaderNames;
+        scores = mediumLeaderScores;
+    }
+    else if (level == 3) {
+        names = hardLeaderNames;
+        scores = hardLeaderScores;
+    }
+    else return;
+
+    iSetColor(0, 0, 0);
+    //iText(400, 470, "Leaderboard", GLUT_BITMAP_HELVETICA_18);
+
+    for (int i = 0; i < MAX_LEADERS; i++) {
+        if (scores[i] == 0) break;
+
+        char line[100];
+        sprintf(line, "%d. %s -------------------- %d", i + 1, names[i], scores[i]);
+        iText(400, 430 - i * 30, line, GLUT_BITMAP_HELVETICA_18);
+    }
+}
+
+
+
+
+void InitLeaderboards() {
+    for (int i = 0; i < MAX_LEADERS; i++) {
+        easyLeaderNames[i][0] = '\0';
+        easyLeaderScores[i] = 0;
+
+        mediumLeaderNames[i][0] = '\0';
+        mediumLeaderScores[i] = 0;
+
+        hardLeaderNames[i][0] = '\0';
+        hardLeaderScores[i] = 0;
+    }
+}
+
+
+
 void GameOver() {
+    
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
     iPauseTimer(SpriteTimer);
@@ -89,7 +188,11 @@ void GameOver() {
     iPauseTimer(ObstacleMoveTimer);
     iPauseTimer(EnemyMoveTimer);
     PausePossible = 0;
+    if (strlen(playerName) > 0 && score > 0) {
+    AddScore(level, playerName, score);
 }
+}
+
 
 
 void SpriteFall(){
@@ -160,6 +263,14 @@ void GamePlay(){
 
 void NameInputWindow(){
     iShowImage(0, 0, "assets/images/pages/NameInput.jpg");
+    iSetColor(0, 0, 0);
+    //iText(420, 220, "Enter your name:", GLUT_BITMAP_HELVETICA_18);
+    iText(530, 210, playerName, GLUT_BITMAP_HELVETICA_18);
+
+    if (typingName) {
+        iText(530 + 10 * strlen(playerName), 210, "|", GLUT_BITMAP_HELVETICA_18);  // cursor
+    }
+
 }
 
 void LevelEasy(){
@@ -218,14 +329,17 @@ void Settings(){
 
 void HighScoreEasy(){
     iShowImage(0, 0, "assets/images/pages/EasyHighScore.jpg");
+    DisplayLeaderboard(1);
 }
 
 void HighScoreMedium(){
     iShowImage(0, 0, "assets/images/pages/MediumHighScore.jpg");
+    DisplayLeaderboard(2);
 }
 
 void HighScoreHard(){
     iShowImage(0, 0, "assets/images/pages/HardHighScore.jpg");
+    DisplayLeaderboard(3);
 }
 
 void HighScore(){
@@ -433,13 +547,19 @@ void iMouse(int button, int state, int mx, int my){
         }
 
         else if(GameState==2 && level==0 && NameInput == 1){   //name input
+            if(mx > 530 && mx < 700 && my > 210 && my < 235){   //click in name input area
+                typingName = 1;
+            }
+                
                 if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
                     NameInput = 0;
                     IsGameOver = 0;
+                    typingName = 0;
                 }
                 else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
                     NameInput = 0;
                     IsGameOver = 0;
+                    typingName = 0;
                 }
         }
 
@@ -522,8 +642,31 @@ void iMouseWheel(int dir, int mx, int my)
 function iKeyboard() is called whenever the user hits a key in keyboard.
 key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key, int state)
+void iKeyboard(unsigned char key, int state) 
 {
+    // Name input handling should come FIRST
+    if (typingName && (GameState == 4 || (GameState == 2 && level == 0 && NameInput == 1))) {
+        if (key == '\r') { // Enter finishes typing
+            typingName = 0;
+        }
+        else if (key == 8) { // Backspace
+            int len = strlen(playerName);
+            if (len > 0) {
+                playerName[len - 1] = '\0';
+            }
+        }
+        else if (key == 27) { // ESC
+            typingName = 0;
+        }
+        else if ((key >= 32 && key <= 126) && strlen(playerName) < 28) {
+            int len = strlen(playerName);
+            playerName[len] = key;
+            playerName[len + 1] = '\0';
+        }
+        return; // Don't continue to main switch
+    }
+
+    // Other keys (game control)
     switch (key)
     {
     case '\r':
@@ -537,28 +680,8 @@ void iKeyboard(unsigned char key, int state)
     default:
         break;
     }
-    //name input handling
-    if(typingName && GameState == 4){
-    if(key == '\r'){ // Enter finishes typing
-        typingName = 0;
-    }
-    else if((key >= 32 && key <= 126) && strlen(playerName) < 28){
-        int len = strlen(playerName);
-        playerName[len] = key;
-        playerName[len+1] = '\0';
-    }
-    }
-    else if(key == 8 && typingName && GameState == 4){ // Backspace
-    int len = strlen(playerName);
-    if(len > 0){
-        playerName[len-1] = '\0';
-    }
-    }
-    else if(key == 27){ // ESC
-            typingName = 0;
-        }
-
 }
+
 
 /*
 function iSpecialKeyboard() is called whenver user hits special keys likefunction
@@ -586,9 +709,11 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     // place your own initialization codes here.
+    InitLeaderboards(); 
 
     LoadSprite();
     SpriteTimer = iSetTimer(100, iAnim);
+    
 
     BirdFallTimer = iSetTimer(30, SpriteFall);
 
