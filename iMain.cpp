@@ -611,8 +611,10 @@ void iMouse(int button, int state, int mx, int my){
             if(mx > 530 && mx < 700 && my > 210 && my < 235){   //click in name input area
                 typingName = 1;
             }
-                
-                if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
+                if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                GameState = 1;      //back to main menu
+                }
+                else if(mx > 455 && mx < 620 && my > 348 && my < 395){   //new game start
                     NameInput = 0;
                     IsGameOver = 0;
                     typingName = 0;
