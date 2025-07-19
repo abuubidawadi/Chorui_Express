@@ -8,15 +8,6 @@
 #define MAX_LEADERS 10
 #define MAX_NAME_LEN 30
 
-char easyLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
-int easyLeaderScores[MAX_LEADERS];
-
-char mediumLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
-int mediumLeaderScores[MAX_LEADERS];
-
-char hardLeaderNames[MAX_LEADERS][MAX_NAME_LEN];
-int hardLeaderScores[MAX_LEADERS];
-
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
@@ -35,11 +26,12 @@ int typingName = 0;
 
 char playerName[100] = "";
 int nameLength = 0;
-//int score = 0; // your game's score variable
 int difficulty = 1; // 1 = Easy, 2 = Medium, 3 = Hard
 
-
-
+#define MAX_ENTRIES 100
+char names[MAX_ENTRIES][100];
+int scores[MAX_ENTRIES];
+int entryCount = 0;
 
 void HomePage(){
     iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
@@ -119,65 +111,107 @@ void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char
 }
 
 
-void AddScore(int level, char *name, int score) {
-    if (level == 1) {
-        InsertScore(easyLeaderNames, easyLeaderScores, MAX_LEADERS, name, score);
-    }
-    else if (level == 2) {
-        InsertScore(mediumLeaderNames, mediumLeaderScores, MAX_LEADERS, name, score);
-    }
-    else if (level == 3) {
-        InsertScore(hardLeaderNames, hardLeaderScores, MAX_LEADERS, name, score);
+//#define MAX_ENTRIES 10
+
+void AddScore(int level, char name[], int score) {
+    char *filename;
+
+    if (level == 1) filename = "ezScore.txt";
+    else if (level == 2) filename = "medScore.txt";
+    else filename = "hardScore.txt";
+
+    FILE *fp = fopen(filename, "a");
+    if (fp) {
+        fprintf(fp, "%s %d\n", name, score);
+        fclose(fp);
     }
 }
 
-void DisplayLeaderboard(int level) {
-    char (*names)[MAX_NAME_LEN];
-    int *scores;
+int totalScores = 0;
 
-    if (level == 1) {
-        names = easyLeaderNames;
-        scores = easyLeaderScores;
-    }
-    else if (level == 2) {
-        names = mediumLeaderNames;
-        scores = mediumLeaderScores;
-    }
-    else if (level == 3) {
-        names = hardLeaderNames;
-        scores = hardLeaderScores;
-    }
-    else return;
+void LoadScores(int level) {
+    char *filename;
 
+    if (level == 1) filename = "ezScore.txt";
+    else if (level == 2) filename = "medScore.txt";
+    else filename = "hardScore.txt";
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp) return;
+
+    totalScores = 0;
+    char tempName[100];
+    int tempScore;
+
+    while (fscanf(fp, "%s %d", tempName, &tempScore) == 2) {
+        // Check for duplicate
+        int duplicate = 0;
+        for (int i = 0; i < totalScores; i++) {
+            if (strcmp(names[i], tempName) == 0) {
+                if (tempScore > scores[i]) scores[i] = tempScore;
+                duplicate = 1;
+                break;
+            }
+        }
+        if (!duplicate && totalScores < MAX_ENTRIES) {
+            strcpy(names[totalScores], tempName);
+            scores[totalScores] = tempScore;
+            totalScores++;
+        }
+    }
+    fclose(fp);
+
+    // Sort by score descending
+    for (int i = 0; i < totalScores - 1; i++) {
+        for (int j = i + 1; j < totalScores; j++) {
+            if (scores[i] < scores[j]) {
+                int tmpScore = scores[i];
+                scores[i] = scores[j];
+                scores[j] = tmpScore;
+
+                char tmpName[100];
+                strcpy(tmpName, names[i]);
+                strcpy(names[i], names[j]);
+                strcpy(names[j], tmpName);
+            }
+        }
+    }
+}
+
+void ShowLeaderboard() {
     iSetColor(0, 0, 0);
-    //iText(400, 470, "Leaderboard", GLUT_BITMAP_HELVETICA_18);
-
-    for (int i = 0; i < MAX_LEADERS; i++) {
-        if (scores[i] == 0) break;
-
-        char line[100];
-        sprintf(line, "%d. %s -------------------- %d", i + 1, names[i], scores[i]);
-        iText(400, 430 - i * 30, line, GLUT_BITMAP_HELVETICA_18);
+    
+    for (int i = 0; i < totalScores && i < 10; i++) {
+        char buf[200];
+        sprintf(buf, "%2d. %-20s %5d", i + 1, names[i], scores[i]);
+        iText(360, 390 - i * 30, buf, GLUT_BITMAP_HELVETICA_18);
+    }
+    
+    if (totalScores == 0) {
+        iText(350, 300, "No high scores yet!", GLUT_BITMAP_HELVETICA_18);
     }
 }
 
 
-
-
-void InitLeaderboards() {
-    for (int i = 0; i < MAX_LEADERS; i++) {
-        easyLeaderNames[i][0] = '\0';
-        easyLeaderScores[i] = 0;
-
-        mediumLeaderNames[i][0] = '\0';
-        mediumLeaderScores[i] = 0;
-
-        hardLeaderNames[i][0] = '\0';
-        hardLeaderScores[i] = 0;
+void InitializeScoreFiles() {
+    FILE *f;
+    
+    // Check and create files if they don't exist
+    if ((f = fopen("ezScore.txt", "r")) == NULL) {
+        f = fopen("ezScore.txt", "w");
+        fclose(f);
+    }
+    
+    if ((f = fopen("medScore.txt", "r")) == NULL) {
+        f = fopen("medScore.txt", "w");
+        fclose(f);
+    }
+    
+    if ((f = fopen("hardScore.txt", "r")) == NULL) {
+        f = fopen("hardScore.txt", "w");
+        fclose(f);
     }
 }
-
-
 
 void GameOver() {
     
@@ -188,9 +222,8 @@ void GameOver() {
     iPauseTimer(ObstacleMoveTimer);
     iPauseTimer(EnemyMoveTimer);
     PausePossible = 0;
-    if (strlen(playerName) > 0 && score > 0) {
     AddScore(level, playerName, score);
-}
+    
 }
 
 
@@ -264,7 +297,6 @@ void GamePlay(){
 void NameInputWindow(){
     iShowImage(0, 0, "assets/images/pages/NameInput.jpg");
     iSetColor(0, 0, 0);
-    //iText(420, 220, "Enter your name:", GLUT_BITMAP_HELVETICA_18);
     iText(530, 210, playerName, GLUT_BITMAP_HELVETICA_18);
 
     if (typingName) {
@@ -304,6 +336,24 @@ void Instructions(){
     iShowImage(0, 0, "assets/images/pages/Instructions.jpg");
 }
 
+void ClearAllScores() {
+    FILE *fp;
+
+    // Easy
+    fp = fopen("ezScore.txt", "w");
+    if(fp) fclose(fp);
+
+    // Medium
+    fp = fopen("medScore.txt", "w");
+    if(fp) fclose(fp);
+
+    // Hard
+    fp = fopen("hardScore.txt", "w");
+    if(fp) fclose(fp);
+}
+
+
+
 void Settings(){
     if(bg_music==1 && bird_sound==1){
         iShowImage(0, 0, "assets/images/pages/Settings_on_on.jpg");
@@ -329,17 +379,21 @@ void Settings(){
 
 void HighScoreEasy(){
     iShowImage(0, 0, "assets/images/pages/EasyHighScore.jpg");
-    DisplayLeaderboard(1);
+    LoadScores(1);  
+    ShowLeaderboard();
+    
 }
 
 void HighScoreMedium(){
     iShowImage(0, 0, "assets/images/pages/MediumHighScore.jpg");
-    DisplayLeaderboard(2);
+    LoadScores(2);  
+    ShowLeaderboard();
 }
 
 void HighScoreHard(){
     iShowImage(0, 0, "assets/images/pages/HardHighScore.jpg");
-    DisplayLeaderboard(3);
+    LoadScores(3); 
+    ShowLeaderboard();
 }
 
 void HighScore(){
@@ -356,6 +410,8 @@ void HighScore(){
         HighScoreHard();
     }
 }
+
+
 
 void Exit(){
     iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
@@ -508,6 +564,11 @@ void iMouse(int button, int state, int mx, int my){
                 typingName = 1;
             }
 
+            else if(mx > 215 && mx < 400 && my > 150 && my < 170){   //reset all scores
+                ClearAllScores();
+               // ResetAllScores();
+            }
+
         }
 
         else if(GameState==5){      //in high score
@@ -644,7 +705,7 @@ key- holds the ASCII value of the key pressed.
 */
 void iKeyboard(unsigned char key, int state) 
 {
-    // Name input handling should come FIRST
+    // Name input handling 
     if (typingName && (GameState == 4 || (GameState == 2 && level == 0 && NameInput == 1))) {
         if (key == '\r') { // Enter finishes typing
             typingName = 0;
@@ -709,8 +770,8 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     // place your own initialization codes here.
-    InitLeaderboards(); 
-
+    //InitLeaderboards(); 
+    InitializeScoreFiles();
     LoadSprite();
     SpriteTimer = iSetTimer(100, iAnim);
     
