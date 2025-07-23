@@ -1,28 +1,75 @@
 <div align="center">
 <h1> Modern iGraphics Library</h1>
-<!-- <h2> A C++ Graphics Library for Beginners</h2> -->
+<h2> 🎮 A Comprehensive C++ Graphics Library for Beginners</h2>
 </div>
 
 <p align="center">
-    <a href="https://github.com/mahirlabibdihan/Modern-iGraphics">💻 Code</a> •
-    <a href="https://mahirlabibdihan.github.io/Modern-iGraphics">🏠 Homepage</a>
+    <a href="https://github.com/mahirlabibdihan/Modern-iGraphics">
+      <img src="https://img.shields.io/badge/GitHub-Repo-black?logo=github&&style=for-the-badge" alt="GitHub repo"/>
+    </a>
+    <a href="https://github.com/mahirlabibdihan/Modern-iGraphics/stargazers">
+      <img src="https://img.shields.io/github/stars/mahirlabibdihan/Modern-iGraphics.svg?style=for-the-badge" alt="GitHub stars"/>
+    </a>
+    <a href="https://github.com/mahirlabibdihan/Modern-iGraphics/network/members">
+      <img src="https://img.shields.io/github/forks/mahirlabibdihan/Modern-iGraphics.svg?style=for-the-badge" alt="GitHub forks"/>
+    </a>
+     <a href="https://github.com/mahirlabibdihan/Modern-iGraphics/commits/main/">
+     <img src="https://img.shields.io/github/last-commit/mahirlabibdihan/Modern-iGraphics?style=for-the-badge" alt="Last Commit"/>
+     </a>
+    <a href="https://github.com/mahirlabibdihan/Modern-iGraphics/releases/latest">
+     <img src="https://img.shields.io/github/v/release/mahirlabibdihan/Modern-iGraphics?style=for-the-badge" alt="Latest Release"/>
+     </a>
+
 </p>
 
----
-
-[iGraphics.h](https://github.com/mahirlabibdihan/Modern-iGraphics/blob/main/iGraphics.h) header file contains some drawing functions that can be used to draw basic graphical shapes in C++. These functions are implemented in OpenGL. Users of iGraphics do not need any knowledge of OpenGL to use it. Simply calling the drawing functions a user can draw any 2D shape on screen. This library also provides easy ways for animation, keyboard and mouse event handling.
-
-It was originally created by [Shahriar Nirjon](https://www.cs.unc.edu/~nirjon/) on 2009 with limited functionalities and only for Windows. This is an extended version of the original iGraphics library with support for multiple image formats, sound engine, sprite management, collision detection and advanced mouse control. The library is now **cross-platform** and works on both **Windows** and **Linux**. Updates will be added incrementally based on requests.
-
-<!-- Besides, the original library used `glut`, which is upgraded to `freeglut` in this version. -->
-
----
+<!-- --- -->
 
 <!-- Banner Image -->
 
 <div align="center">
     <img src="banner.svg" alt="iGraphics Banner" width="600">
 </div>
+
+<!-- --- -->
+
+<!--
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-black?logo=github)](https://github.com/mahirlabibdihan/Modern-iGraphics) -->
+
+<!-- [![GitHub stars](https://img.shields.io/github/stars/mahirlabibdihan/Modern-iGraphics.svg?style=for-the-badge)](https://github.com/mahirlabibdihan/Modern-iGraphics/stargazers)
+
+[![GitHub forks](https://img.shields.io/github/forks/mahirlabibdihan/Modern-iGraphics.svg?style=for-the-badge)](https://github.com/mahirlabibdihan/Modern-iGraphics/fork) -->
+
+<!-- <a href="https://github.com/mahirlabibdihan/Modern-iGraphics">💻 Code</a>
+    <a href="https://mahirlabibdihan.github.io/Modern-iGraphics">🏠 Homepage</a> -->
+
+<!-- --- -->
+
+<br>
+
+[iGraphics.h](https://igraphics2d.blogspot.com/p/igraphics-documentation.html) header file contains some drawing functions that can be used to draw basic graphical shapes in C++. These functions are implemented in OpenGL. Users of iGraphics do not need any knowledge of OpenGL to use it. Simply calling the drawing functions a user can draw any 2D shape on screen. This library also provides easy ways for animation, keyboard and mouse event handling.
+
+It was originally created by [Shahriar Nirjon](https://www.cs.unc.edu/~nirjon/) on 2009 with limited functionalities and only for Windows. This is an extended version of the original iGraphics library with support for multiple image formats, custom fonts, sound engine, sprite management, collision detection and advanced mouse-keyboard control. The library is now **cross-platform** and works on both **Windows** and **Linux**. Updates will be added incrementally based on requests.
+
+## 🧱 Original iGraphics vs. ⚙️ Modern iGraphics
+
+<!-- <div align="center"> -->
+
+| **Feature**                | **Original iGraphics (2009)** | **Modern iGraphics (2025)**       |
+| :------------------------- | :---------------------------- | :-------------------------------- |
+| **Cross-Platform Support** | ❌ Windows only               | ✅ Windows & Linux                |
+| **Image Formats**          | ❌ BMP only                   | ✅ Multiple formats               |
+| **Audio Formats**          | ❌ WAV only                   | ✅ Multiple formats               |
+| **Font Support**           | ❌ Limited bitmap fonts       | ✅ Custom TTF fonts               |
+| **Sound Integration**      | ❌ Single Channel             | ✅ Multi-Channel                  |
+| **Input Handling**         | ❌ Basic                      | ✅ Enhanced controls              |
+| **Transparency Support**   | ❌ Not available              | ✅ Full RGBA color support        |
+| **Image Manipulation**     | ❌ No transformations         | ✅ Rotate/Scale/Flip/Wrap         |
+| **Image rendering**        | ❌ Slow                       | ✅ Fast (Texture-based + Caching) |
+| **Sprite Management**      | ❌ Manual implementation      | ✅ Built-in sprite system         |
+| **Collision Detection**    | ❌ Not available              | ✅ Pixel-perfect collision        |
+
+<!-- </div> -->
+<!-- Besides, the original library used `glut`, which is upgraded to `freeglut` in this version. -->
 
 ---
 
@@ -37,18 +84,44 @@ It was originally created by [Shahriar Nirjon](https://www.cs.unc.edu/~nirjon/) 
 - [Tetris](https://youtu.be/jC8eX8RNuUM?si=ai22EmpSUbyJSyTN)
 - [Snake Game](https://youtu.be/mjOVhspXOjY?si=VVC-PrjMz3F79m_f)
 
+You can find executable games [here](https://github.com/mahirlabibdihan/Modern-iGraphics/releases/download/v0.0.1/demo.zip)
+
 ---
+
+## Necessary Files
+
+- Download the `Modern-iGraphics-main.zip` file from [here](https://github.com/mahirlabibdihan/Modern-iGraphics/archive/refs/heads/main.zip) and extract it.
+- Download `MINGW.zip` file from [here](https://github.com/mahirlabibdihan/Modern-iGraphics/releases/download/v0.0.1/MINGW.zip) and extract it.
+- Copy the `MINGW` folder to the extracted `Modern-iGraphics-main` folder.
+- The final folder structure should look like this:
+
+```
+Modern-iGraphics-main
+├── MINGW
+│   ├── bin
+│   ├── include
+│   ├── lib
+│   ├── ....
+│   └── share
+├── OpenGL
+├── assets
+├── bin
+├── obj
+├── examples
+├── iGraphics.h
+├── iGraphics.cbp
+├── iMain.cpp
+├── ....
+```
 
 ## 🧱 Setup in Code::Blocks
 
-Download the ZIP file from [here](https://github.com/mahirlabibdihan/Modern-iGraphics/archive/refs/heads/main.zip) and extract it.
+Change the compiler path of Code::Blocks as following:
+`Settings` → `Compiler` → Go to `Toolchain executables` tab → Change the `Compiler's installation directory` to the `MINGW` directory in the iGraphics folder. You can do that by clicking the three dots (`...`) on right. After you change the compiler, clear the `.o` files inside `obj` folder (If there is any).
 
 Open `iGraphics.cbp` in Code::Blocks. The project is already configured with all the necessary settings. You can directly run the project. By default, the main file is `iMain.cpp`. You can remove it and add a different file if you want.
 
-In some versions of Code::Blocks, you may need to change the compiler path as following:
-`Settings` → `Compiler` → Go to `Toolchain executables` tab → Change the `Compiler's installation directory` to the `MINGW` directory in the iGraphics folder. You can do that by clicking the three dots (`...`) on right.
-
-After you change the compiler, clear the `.o` files inside `obj` folder.
+_You can find the slides with step-by-step screenshots_ [here](https://docs.google.com/presentation/d/1VTaBzzTKQhPsGCA9_CBIUZvDUh3l6v3_gnTCPSLk_XM/edit?usp=sharing).
 
 ---
 
@@ -76,9 +149,64 @@ Ensure that `g++` is installed on your system and available in your PATH. Then, 
 - **Linux**
 
 ```bash
-sudo apt install libsdl2-dev libsdl2-mixer-dev # Install SDL2 and SDL2_mixer if not already installed
+sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+sudo apt install libsdl2-dev libsdl2-mixer-dev
+sudo apt install libfreetype6-dev
 ./runner.sh examples/BallDemo.cpp
 ```
+
+---
+
+## 🚀 Quick Start
+
+### 🛠️ Project Creation Tools
+
+For quick project setup, use the provided project creation scripts:
+
+**Windows:**
+
+```bash
+.\create_project.bat MyGameName
+```
+
+**Linux/Unix:**
+
+```bash
+./create_project.sh MyGameName
+```
+
+These scripts will automatically generate a complete starter template with:
+
+- ✅ All necessary iGraphics function stubs
+- ✅ Example drawing code (text + red circle)
+- ✅ Mouse and keyboard handlers
+- ✅ Animation timer setup (commented)
+- ✅ Comprehensive comments and documentation
+
+---
+
+<!-- Release Guideline -->
+
+## 📦 Release Guideline (Windows)
+
+- **Organize Your Assets**
+
+  - Ensure all game assets (images, sprites, sounds, level designs, etc.) are inside the assets folder.
+  - Remove any unnecessary or default assets to save space.
+
+- **Save Files**
+
+  - Place any saved game data in the saves folder.
+
+- **Run the Release Script**
+
+  - Double-click release.bat or run it from the terminal using:
+    `.\release.bat iMain.cpp`
+
+- **Check the Output**
+  - After execution, a release folder will be created. Navigate to:
+    `release → windows → x86`
+  - Inside, you’ll find the necessary files to run your game. Please test `game.exe` to ensure your game runs properly.
 
 <!-- ### Step 1: Create a New Project
 
@@ -154,10 +282,10 @@ void iDraw()
 }
 
 /*
-function iMouse() is called when the user presses/releases the mouse.
+function iMouseClick() is called when the user presses/releases the mouse.
 (mx, my) is the position where the mouse pointer is.
 */
-void iMouse(int button, int state, int mx, int my)
+void iMouseClick(int button, int state, int mx, int my)
 {
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
@@ -177,34 +305,18 @@ void iMouseMove(int mx, int my)
 {
     //place your codes here
 }
-/*
-function iMouseDrag() is called when the user presses and drags the mouse.
-(mx, my) is the position where the mouse pointer is.
-*/
-void iMouseDrag(int mx, int my)
-{
-    //place your codes here
-}
 
 /*
-function iMouseWheel() is called when the user scrolls the mouse wheel.
-dir = 1 for up, -1 for down.
-*/
-void iMouseWheel(int dir, int mx, int my)
-{
-    // place your code here
-}
-
-/*
-function iKeyboard() is called whenever the user hits a key in keyboard.
+function iKeyPress() is called whenever the user hits a key in keyboard.
 key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key)
+void iKeyPress(unsigned char key)
 {
     switch (key)
     {
     case 'q':
         // do something with 'q'
+        iCloseWindow();
         break;
     // place your codes for other keys here
     default:
@@ -213,7 +325,7 @@ void iKeyboard(unsigned char key)
 }
 
 /*
-function iSpecialKeyboard() is called whenver user hits special keys likefunction
+function iSpecialKeyPress() is called whenver user hits special keys likefunction
 keys, home, end, pg up, pg down, arraows etc. you have to use
 appropriate constants to detect them. A list is:
 GLUT_KEY_F1, GLUT_KEY_F2, GLUT_KEY_F3, GLUT_KEY_F4, GLUT_KEY_F5, GLUT_KEY_F6,
@@ -221,7 +333,7 @@ GLUT_KEY_F7, GLUT_KEY_F8, GLUT_KEY_F9, GLUT_KEY_F10, GLUT_KEY_F11,
 GLUT_KEY_F12, GLUT_KEY_LEFT, GLUT_KEY_UP, GLUT_KEY_RIGHT, GLUT_KEY_DOWN,
 GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN, GLUT_KEY_HOME, GLUT_KEY_END,
 GLUT_KEY_INSERT */
-void iSpecialKeyboard(unsigned char key)
+void iSpecialKeyPress(unsigned char key)
 {
     switch (key)
     {
@@ -236,9 +348,9 @@ void iSpecialKeyboard(unsigned char key)
 
 int main(int argc, char *argv[])
 {
-    glutInit(&argc, argv);
-    //place your own initialization codes here.
-    iInitialize(400, 400, "demooo");
+    // Initialization code before opening the window
+    iOpenWindow(400, 400, "iGraphics");
+    // Execution will continue from here once iCloseWindow() is called.
     return 0;
 }
 ```
@@ -249,7 +361,7 @@ int main(int argc, char *argv[])
 
 ### 🖼️ Graphics Functions
 
-#### `void iInitialize(int width=500, int height=500, char* title="iGraphics")`
+#### `void iOpenWindow(int width=500, int height=500, char* title="iGraphics")`
 
 - **Description:** Creates a window of specified size and title.
 - **Parameters:**
@@ -258,7 +370,26 @@ int main(int argc, char *argv[])
   - `title`: Title of the window.
 - **Example:**
   ```cpp
-  iInitialize(300, 300, "demooo");
+  iOpenWindow(300, 300, "iGraphics");
+  ```
+
+#### `void iCloseWindow()`
+
+- **Description:** Closes the current window.
+- **Parameters:** None
+- **Example:**
+  ```cpp
+  void iKeyPress(unsigned char key)
+  {
+      switch (key)
+      {
+      case 'q':
+          iCloseWindow();
+          break;
+      default:
+          break;
+      }
+  }
   ```
 
 #### `void iClear()`
@@ -418,7 +549,22 @@ int main(int argc, char *argv[])
 #### `void iSetLineWidth(float width)`
 
 - **Description:** Sets the width of lines to be drawn.
-- **Parameters:** `width`
+- **Parameters:** `width` - Line width in pixels.
+- **Example:**
+  ```cpp
+  iSetLineWidth(3.0); // Set line width to 3 pixels
+  iLine(0, 0, 100, 100); // Draw a thick line
+  ```
+
+#### `void iShowSpeed(double x, double y)`
+
+- **Description:** Displays the current FPS (Frames Per Second) at specified coordinates.
+- **Parameters:**
+  - `x`, `y`: Coordinates where FPS will be displayed.
+- **Example:**
+  ```cpp
+  iShowSpeed(10, 10); // Show FPS counter at top-left corner
+  ```
 
 #### `void iText(double x, double y, char *str, void* font=GLUT_BITMAP_8_BY_13)`
 
@@ -436,20 +582,32 @@ int main(int argc, char *argv[])
     - `GLUT_BITMAP_HELVETICA_18`
 - **Example:** `iText(50, 60, "This is a text", GLUT_BITMAP_TIMES_ROMAN_10);`
 
-#### `void iTextBold(double x, double y, char *str, void* font=GLUT_BITMAP_8_BY_13)`
+#### `void iRotate(double x, double y, double degree)`
 
-- **Description:** Displays a bold string on screen.
-
-#### `void iTextAdvanced(double x, double y, const char *str, float scale = 0.3, float weight = 1.0, void *font = GLUT_STROKE_ROMAN)`
-
-- **Description:** Displays a string on screen with specified scale and weight.
+- **Description:** Rotates the coordinate system around a point.
 - **Parameters:**
-  - `x`, `y`: Coordinates of the first character.
-  - `str`: The text to display.
-  - `scale`: Scale factor for the text.
-  - `weight`: Weight of the text (1.0 for normal, 2.0 for bold).
-  - `font`: Font type (default is `GLUT_STROKE_ROMAN`).
-- **Example:** `iTextAdvanced(50, 60, "This is a text", 0.5, 2.0);`
+  - `x`, `y`: Coordinates of the point to rotate around.
+  - `degree`: Angle in degrees to rotate.
+- **Example:**
+  ```cpp
+  iRotate(100, 100, 45); // Rotate around point (100, 100) by 45 degrees
+  iShowImage(50, 50, "image.png"); // This image will be rotated
+  iUnRotate();
+  ```
+
+#### `void iScale(double x, double y, double scaleX, double scaleY)`
+
+- **Description:** Scales the coordinate system around a point.
+- **Parameters:**
+  - `x`, `y`: Coordinates of the point to scale around.
+  - `scaleX`: Scaling factor in the x-direction.
+  - `scaleY`: Scaling factor in the y-direction.
+  - **Example:**
+  ```cpp
+  iScale(0,0, 2.0, 1.5); // Scale around the origin (0, 0) by 2.0 in x and 1.5 in y
+  // This will affect all subsequent drawing operations
+  iUnScale();
+  ```
 
 ### ⏱️ Animation and Timer
 
@@ -470,9 +628,9 @@ int main(int argc, char *argv[])
   int main(int argc, char *argv[])
   {
       ...
-      int t = iSetTimer(100, func); // //call it inside main() before iInitialize();
+      int t = iSetTimer(100, func); // //call it inside main() before iOpenWindow();
       ...
-      iInitialize(400, 400, "demooo");
+      iOpenWindow(400, 400, "iGraphics");
   }
   ```
 
@@ -499,7 +657,7 @@ int main(int argc, char *argv[])
 
 ### 🖱️ Mouse Functions
 
-#### `void iMouse(int button, int state, int mx, int my)`
+#### `void iMouseClick(int button, int state, int mx, int my)`
 
 - **Description:** Called when a mouse button is pressed or released.
 - **Parameters:**
@@ -528,26 +686,59 @@ int main(int argc, char *argv[])
   - `mx`, `my`: Coordinates of the mouse pointer.
 - **Note:** _This function should be defined in the main file._
 
+#### `void iShowCursor()`
+
+- **Description:** Shows the mouse cursor.
+- **Parameters:** None
+- **Example:**
+  ```cpp
+  iShowCursor();
+  ```
+
+#### `void iHideCursor()`
+
+- **Description:** Hides the mouse cursor.
+- **Parameters:** None
+- **Example:**
+  ```cpp
+  iHideCursor();
+  ```
+
 ### ⌨️ Keyboard Functions
 
-#### `void iKeyboard(unsigned char key)`
+#### `void iKeyPress(unsigned char key)`
 
-- **Description:** Called when a key is pressed down.
-- **Parameters:** `key` pressed.
+- **Description:** Called when a key is pressed.
+- **Parameters:**
+  - `key`: ASCII value of the key pressed.
 - **Note:** _This function should be defined in the main file._
 
-#### `void iSpecialKeyboard(unsigned char key)`
+#### `void iSpecialKeyPress(unsigned char key)`
 
-- **Description:** Called when a special key is pressed down.
-- **Parameters:** `key` pressed.
+- **Description:** Called when a special key is pressed.
+- **Parameters:**
+  - `key`: Special key value (e.g., `GLUT_KEY_LEFT`, `GLUT_KEY_RIGHT`, etc.).
 - **Note:** _This function should be defined in the main file._
 
-#### `bool isKeyPressed(unsigned char key)`
+#### `void iKeyRelease(unsigned char key)`
+
+- **Description:** Called when a key is released.
+- **Parameters:**
+- `key`: ASCII value of the key released.
+- **Note:** _This function should be defined in the main file._
+
+#### `void iSpecialKeyRelease(unsigned char key)`
+
+- **Description:** Called when a special key is released.
+- **Parameters:**
+- `key`: Special key value (e.g., `GLUT_KEY_LEFT`, `GLUT_KEY_RIGHT`, etc.).
+- **Note:** _This function should be defined in the main file._
+
+#### `int isKeyPressed(unsigned char key)`
 
 - **Description:** Checks if a key is being pressed (Not yet released).
 - **Parameters:** `key` to check.
-- **Returns:** `true` if pressed, `false` otherwise.
-
+- **Returns:** `1` if pressed, `0` otherwise.
 - **Example:**
   ```cpp
   if (isKeyPressed('a')) {
@@ -555,11 +746,11 @@ int main(int argc, char *argv[])
   }
   ```
 
-#### `bool isSpecialKeyPressed(unsigned char key)`
+#### `int isSpecialKeyPressed(unsigned char key)`
 
 - **Description:** Checks if a special key is being pressed (Not yet released).
 - **Parameters:** `key` to check.
-- **Returns:** `true` if pressed, `false` otherwise.
+- **Returns:** `1` if pressed, `0` otherwise.
 - **Example:**
   ```cpp
   if (isSpecialKeyPressed(GLUT_KEY_LEFT)) {
@@ -571,27 +762,20 @@ int main(int argc, char *argv[])
 
 `iGraphics` was originally designed for graphical applications, but it has been extended to support sound playback using the `SDL2` library. The sound functions are available in `iSound.h` and are shown below:
 
-#### `int iPlaySound(const char *filename, bool loop = false, int volume = 100)`
+#### `int iPlaySound(const char *filename, int loop = 0, int volume = 100)`
 
 - **Description:** Plays a sound from file with optional looping and volume control.
 - **Parameters:**
   - `filename`: Path to the sound file.
   - `loop`: `true` for continuous play, `false` for one-time play.
   - `volume`: Volume level (0-100).
-- **Returns:** Channel where the sound is played.
-- **Note:** You cann't play more than 8 sounds at a time.
+- **Returns:** Channel where the sound is played (-1 if failed).
+- **Note:** You can't play more than 8 sounds simultaneously.
+- **Supported Formats:** WAV, MP3, OGG, FLAC, and more.
 - **Example:**
 
   ```cpp
   #include "iSound.h" // Include the sound header
-  ...
-  int main(int argc, char *argv[])
-  {
-      glutInit(&argc, argv);
-      iInitializeSound(); // Need to initialize sound engine
-      iInitialize(600, 250, "Sound Demo");
-      return 0;
-  }
   ...
   int channel = iPlaySound("background.wav", true, 80);
   ```
@@ -616,7 +800,7 @@ int main(int argc, char *argv[])
 
 #### `void iStopSound(int channel)`
 
-- **Description:** Stops the sound specified by `channel`.
+- **Description:** Stops the sound specified by `channel`. Frees the channel for other sounds.
 - **Parameters:** `channel` of the sound.
 - **Example:**
   ```cpp
@@ -625,7 +809,7 @@ int main(int argc, char *argv[])
 
 #### `void iStopAllSounds()`
 
-- **Description:** Stops all currently playing sounds.
+- **Description:** Stops all currently playing sounds. Frees all channels.
 
 #### `void iSetVolume(int channel, int volume)`
 
@@ -648,6 +832,26 @@ int main(int argc, char *argv[])
   - `index`: Index of the sound.
   - `amount`: Amount to decrease the volume by (0-100).
 
+### 🅰️ Text Functions
+
+Custom font rendering is supported using TrueType fonts. `freetype` library is used to render text. The new text functions are available in `iFont.h` and are shown below:
+
+#### `void iShowText(double x, double y, const char *text, const char *fontPath, int fontSize = 48)`
+
+- **Description:** Displays a string on screen using TrueType font.
+- **Parameters:**
+  - `x`, `y`: Coordinates of the first character.
+  - `text`: The text to display.
+  - `fontPath`: Path to the TrueType font file (e.g., "assets/fonts/arial.ttf").
+  - `fontSize`: Size of the font (default is 48).
+- **Example:**
+
+  ```cpp
+  #include "iFont.h" // Include the font header
+  ...
+  iShowText(50, 60, "This is a text", "assets/fonts/arial.ttf", 48);
+  ```
+
 ### 🖼️ Image Functions
 
 #### `void iShowImage(int x, int y, const char *filename)`
@@ -663,13 +867,16 @@ int main(int argc, char *argv[])
   iShowImage(100, 200, "image.png");
   ```
 
-#### `bool iLoadImage(Image* img, const char filename[])`
+#### `int iLoadImage(Image* img, const char filename[])`
 
 - **Description:** Loads an image from file. Supports multiple image formats (BMP, PNG, JPG, GIF) with the help of the stb_image library.
 
 - **Parameters:**
+
   - `img`: Pointer to an `Image` structure.
   - `filename`: Path to the image file.
+  <!-- - `ignoreColor`: Color to be ignored (default is -1, which means no color is ignored). If set to `0xRRGGBB`, it will ignore the color `RRGGBB` while loading the image (e.g., `0xFF0000` for red). -->
+
 - **Returns:** `true` if successful, `false` otherwise.
 - **Example:**
   ```cpp
@@ -686,12 +893,13 @@ int main(int argc, char *argv[])
   {
       unsigned char *data;
       int width, height, channels;
+      GLuint textureID; // OpenGL texture ID
   } Image;
   ```
 
 #### `void iShowLoadedImage(int x, int y, Image* img)`
 
-- **Description:** Displays an already loaded image at specified coordinates.
+- **Description:** Displays an already loaded image at specified coordinates. Image should be loaded using `iLoadImage`.
 - **Parameters:**
 
   - `x`, `y`: Coordinates where the image will be displayed.
@@ -702,7 +910,7 @@ int main(int argc, char *argv[])
   ```cpp
   Image img;
   iLoadImage(&img, "image.png");
-  iShowImage(100, 200, &img);
+  iShowLoadedImage(100, 200, &img);
   ```
 
 #### `void iScaleImage(Image* img, double scale)`
@@ -742,42 +950,106 @@ int main(int argc, char *argv[])
   iMirrorImage(&img, HORIZONTAL); // Mirror horizontally
   ```
 
-#### `void iWrapImage(Image* img, int dx)`
+#### `void iWrapImage(Image* img, int dx = 0, int dy = 0)`
 
-- **Description:** Wraps the image around the window by `dx` pixels. This function is useful for creating infinite scrolling backgrounds.:
+- **Description:** Wraps the image around the screen by `dx` pixels horizontally and `dy` pixels vertically. This function is useful for creating infinite scrolling backgrounds.
 - **Parameters:**
   - `img`: Pointer to the loaded `Image` structure.
-  - `dx`: Number of pixels to wrap around.
+  - `dx`: Horizontal shift in pixels (default is 0).
     - A positive value of `dx` shifts the image to the right.
     - A negative value of `dx` shifts the image to the left.
+  - `dy`: Vertical shift in pixels (default is 0).
+    - A positive value of `dy` shifts the image down.
+    - A negative value of `dy` shifts the image up.
 - **Example:**
 
   ```cpp
   iWrapImage(&img, 50); // Wrap the image by 50 pixels to the right
   iWrapImage(&img, -50); // Wrap the image by 50 pixels to the left
+  iWrapImage(&img, 0, 30); // Wrap the image by 30 pixels down
+  iWrapImage(&img, 0, -30); // Wrap the image by 30 pixels up
+  ```
+
+#### `void iIgnorePixels(Image* img, int ignoreColor)`
+
+- **Description:** Makes specific colored pixels transparent in the image.
+- **Parameters:**
+  - `img`: Pointer to the loaded `Image` structure.
+  - `ignoreColor`: Color to ignore in 0xRRGGBB format (e.g., 0xFF0000 for red).
+- **Example:**
+  ```cpp
+  iIgnorePixels(&img, 0xFFFFFF); // Make white pixels transparent
   ```
 
 #### `void iFreeImage(Image* img)`
 
 - **Description:** Frees the memory allocated for the image.
 
+<!-- SVG FUnctions -->
+
+<!-- ### 📊 SVG Functions
+
+#### `void iShowSVG(int x, int y, const char *filename, double scale = 1.0, MirrorState mirror = NO_MIRROR)`
+
+- **Description:** Displays an SVG image at specified coordinates.
+- **Parameters:**
+  - `x`, `y`: Coordinates where the SVG will be displayed.
+  - `filename`: Path to the SVG file.
+  - `scale`: Scaling factor (default is 1.0).
+  - `mirror`: Mirror state (default is `NO_MIRROR`).
+- **Example:**
+  ```cpp
+  iShowSVG(100, 200, "image.svg", 1.5, HORIZONTAL);
+  ```
+
+#### `bool iLoadSVG(SVG *svg, const char *filename, double scale = 1.0)`
+
+- **Description:** Loads an SVG image from file.
+- **Parameters:**
+  - `svg`: Pointer to an `SVG` structure.
+  - `filename`: Path to the SVG file.
+  - `scale`: Scaling factor (default is 1.0).
+  - **Returns:** `true` if successful, `false` otherwise.
+  - **Example:**
+  ```cpp
+  Image svg;
+  if (iLoadSVG(&svg, "image.svg", 1.5)) {
+      // SVG loaded successfully
+  } else {
+      // Failed to load SVG
+  }
+  ```
+
+#### `void iShowLoadedSVG(int x, int y, Image *svg, MirrorState mirror = NO_MIRROR)`
+
+- **Description:** Displays an already loaded SVG image at specified coordinates.
+- **Parameters:**
+  - `x`, `y`: Coordinates where the SVG will be displayed.
+  - `svg`: Pointer to the loaded svg image.
+  - `mirror`: Mirror state (default is `NO_MIRROR`).
+- **Example:**
+  ```cpp
+  Image svg;
+  iLoadSVG(&svg, "image.svg", 1.5);
+  iShowLoadedSVG(100, 200, &svg);
+  ``` -->
+
 ### 🧩 Sprite Functions
 
 Free sprite resources: [https://craftpix.net/freebies/](https://craftpix.net/freebies/)\\
 Online sprite cutter: [https://ezgif.com/sprite-cutter](https://ezgif.com/sprite-cutter)
 
-#### `void iInitSprite(Sprite *s, int ignoreColor = -1)`
+#### `void iInitSprite(Sprite *s)`
 
 - **Description:** Initializes a sprite structure.
 - **Parameters:**
+
   - `s`: Pointer to a `Sprite` structure.
-  - `ignoreColor`: Color to be ignored. The ignored part will be transparent.
-    - `-1` to read the whole image
-    - `0xRRGGBB` to ignore the color `RRGGBB` while loading the image (e.g., `0xFF0000` for red).
+
 - **Example:**
   ```cpp
   Sprite s;
-  iInitSprite(&s, 0xFFFFFF); // Initialize sprite and ignore white color
+  iInitSprite(&s); // Initialize sprite and ignore white color
   ```
 - **Sprite Structure**
   ```cpp
@@ -793,8 +1065,10 @@ Online sprite cutter: [https://ezgif.com/sprite-cutter](https://ezgif.com/sprite
 
 - **Description:** Loads frames from a folder containing multiple images.
 - **Parameters:**
+
   - `frames`: Pointer to an array of `Image` structures.
   - `folderPath`: Path to the folder containing images.
+
 - **Example:**
   ```cpp
   Image frames[10];
@@ -831,7 +1105,7 @@ Online sprite cutter: [https://ezgif.com/sprite-cutter](https://ezgif.com/sprite
   Image frames[10];
   iLoadFramesFromFolder(frames,"sprites/"); // Load images from a folder
   Sprite s;
-  iInitSprite(&s, -1); // Initialize sprite
+  iInitSprite(&s); // Initialize sprite
   iChangeSpriteFrames(&s, frames, 4); // Change the frames of the sprite
   ```
 
@@ -884,6 +1158,18 @@ Online sprite cutter: [https://ezgif.com/sprite-cutter](https://ezgif.com/sprite
   - `s`: Pointer to a `Sprite` structure.
   - `state`: `HORIZONTAL` or `VERTICAL`.
 
+#### `void iRotateSprite(Sprite* s, double x, double y, double degree)`
+
+- **Description:** Rotates the sprite around a point `(x, y)` by a specified angle in degrees.
+- **Parameters:**
+  - `s`: Pointer to a `Sprite` structure.
+  - `x`, `y`: Coordinates of the point to rotate around.
+  - `degree`: Angle in degrees to rotate.
+- **Example:**
+  ```cpp
+  iRotateSprite(&s, 100, 100, 45); // Rotate sprite around point (100, 100) by 45 degrees
+  ```
+
 #### `void iFreeSprite(Sprite* s)`
 
 - **Description:** Frees the memory allocated for the sprite.
@@ -907,29 +1193,94 @@ Online sprite cutter: [https://ezgif.com/sprite-cutter](https://ezgif.com/sprite
   }
   ```
 
+#### `int iGetVisiblePixelsCount(Sprite* s1)`
+
+- **Description:** Counts the number of visible pixels in a sprite. This is useful for collision detection.
+- **Parameters:**
+  - `s1`: Pointer to the `Sprite` structure.
+  - **Returns:** Number of visible pixels in the sprite.
+- **Example:**
+- ```cpp
+  Sprite s1;
+  ...
+  int visiblePixels = iGetVisiblePixelsCount(&s1);
+  ```
+
 ### 🧰 Miscellaneous
 
-#### `void iToggleFullscreen()`
+#### `void iEnterFullscreen()`
 
-- **Description:** Toggles between fullscreen and windowed mode.
+- **Description:** Enters fullscreen mode.
+- **Example:**
+  ```cpp
+  iEnterFullscreen(); // Enter fullscreen mode
+  ```
+
+#### `void iLeaveFullscreen()`
+
+- **Description:** Exits fullscreen mode and returns to windowed mode.
+- **Example:**
+- ```cpp
+  iLeaveFullscreen(); // Exit fullscreen mode
+  ```
 
 ---
 
-## ✨ Contributors
+<!-- ## ✨ Contributors
 
 | [![Shahriar Nirjon](https://github.com/nirjon.png?size=100)](https://github.com/nirjon) | [![Mahir Labib Dihan](https://github.com/mahirlabibdihan.png?size=100)](https://github.com/mahirlabibdihan) | [![Anwarul Bashar Shuaib](https://github.com/shuaibw.png?size=100)](https://github.com/shuaibw) | [![Ashrafur Rahman Khan](https://github.com/risenfromashes.png?size=100)](https://github.com/risenfromashes) |
 | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------: |
 |                                   **Shahriar Nirjon**                                   |                                            **Mahir Labib Dihan**                                            |                                    **Anwarul Bashar Shuaib**                                    |                                         **Md. Ashrafur Rahman Khan**                                         |
 
----
+--- -->
 
 ## 📄 License
 
 This library is for educational purposes and is typically used in academic or hobbyist OpenGL projects.
 
-<!--
+<!-- My contribution -->
+
+## 🧠 My Contribution
+
+- **Documentation:** Documented iGraphics with updated features gathered from various iGraphics projects mentioned in the acknowledgements.
+- **Cross-Platform:** Added support for Linux. Previously, it was only supported on Windows.
+- **Custom Font**: Added support for TrueType fonts using `freetype` library.
+- **Rotation**: Added image and sprite rotation. The challenge in sprite rotation was that, collision detection should still work after rotation.
+- **Image**: Using `stb_image` library, added support for loading images in various formats (BMP, PNG, JPG, GIF, etc). Previously, only BMP format was supported. Also, using `Nano SVG`, added support for loading SVG images.
+- **Texture**: Used texture for image and sprite rendering, which allows for better performance and flexibility. Previously, images were rendered using `glDrawPixels`, which is less efficient. One major benefit is that, previously we couldn't draw images with negative `x` or `y` coordinates, but now we can draw images at any position on the screen. Also, rotation of images was possible because of this change.
+- **Keyboard**: Added support for keyboard key release detection. Also, now, we can check if a key is pressed or not using `isKeyPressed` and `isSpecialKeyPressed` functions. This enables parallel key detection, which was not possible before.
+- **Mouse**: Added support for mouse passive motion and mouse wheel scrolling. Also, now we can show or hide the mouse cursor using `iShowCursor` and `iHideCursor` functions.
+- **Sprite**: Added functions to easily work with sprites, including loading frames from folders and sprite sheets (Previously, needed to use a online sprite cutter), animating sprites.
+- **Image Wrap**: Now image wrapping is possible in all four directions (left, right, up, down) using `iWrapImage`. Previously, only in the right direction was possible.
+- **Closing Window**: Added `iCloseWindow` function to close the current window. No such function was available previously. Had to use `exit(0)` to close the window, which is not a good practice.
+- **Sound**: Added sound playback functionality using `SDL2` library. Now, we can play sounds, pause, resume, and stop them. Also, added volume control for sounds. Specially, parallel sound playback is now possible, which was not possible before. Previously, windows specific `PlaySound` function was used, which was not cross-platform.
+- **Timer**: Used `glutTimerFunc` for timer functionality. Previously, windows specific `SetTimer` function was used, which was not cross-platform.
+- **Scaling**: Added support for scaling anything (drawings, images, text) using `iScale` and `iUnscale` functions.
+- **Callbacks**: Made iGraphics function callbacks (e.g., `iDraw`, `iMouseClick`, `iKeyPress`) optional, so that users can choose to implement only the functions they need.
+- **Naming**: Renamed some functions and parameters for better clarity and consistency. For example, `iOpenWindow` instead of `iInitialize`, `iMouseDrag` instead of `iMouseMove`, `iMouseClick` instead of `iMouse`, `iShowImage` instead of `iShowBMP`, etc. This makes the API more intuitive and easier to use.
+
 ## 🙏 Acknowledgements
 
--   [Extended iGraphics by Ash](https://github.com/risenfromashes/Curves/) - Implementation of cross-platform iGraphics library with additional features.
--   [irrKlang](https://github.com/jonas2602/irrKlang) - The sound engine used for sound playback.
--   [freeglut](https://freeglut.sourceforge.net/) - The OpenGL Utility Toolkit. -->
+- [Shahriar Nirjon](https://github.com/nirjon) - Original iGraphics library
+- [Ashrafur Rahman Khan](https://github.com/risenfromashes) - Linux Support, Freeglut, SDL2 sound engine, Transparent Color, Mouse passive motion and Mouse wheel ([repository](https://github.com/risenfromashes/catch-the-egg))
+- [Anwarul Bashar Shuaib](https://github.com/shuaibw) - Image cache, resize, mirror, wrap, and pixel-perfect collision detection functionality ([repository](https://github.com/shuaibw/iGraphics-extended/))
+- [Wasif Jalal](https://github.com/wjalal) - SDL2 sound engine, Game Mode ([repository](https://github.com/wjalal/1-1_term_project_igraphics_dxball))
+
+<!-- ## 🙏 Acknowledgements
+
+
+- [Extended iGraphics by Ash](https://github.com/risenfromashes/Curves/) - Implementation of cross-platform iGraphics library with additional features.
+- [irrKlang](https://github.com/jonas2602/irrKlang) - The sound engine used for sound playback.
+- [freeglut](https://freeglut.sourceforge.net/) - The OpenGL Utility Toolkit. -->
+
+<!-- Resources -->
+
+## 📚 Libraries
+
+- [SDL2](https://www.libsdl.org/): v2.0.12
+  - [SDL2_Mixer](https://www.libsdl.org/projects/SDL_mixer/): v2.0.4
+- [Freetype](https://gnuwin32.sourceforge.net/packages/freetype.htm): v2.3.5
+  - [zlib](https://gnuwin32.sourceforge.net/packages/zlib.htm): v1.2.3
+- [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h): v2.30
+  - [stb_image_resize](https://github.com/nothings/stb/blob/master/stb_image_resize_test/old_image_resize.h): v0.96
+- [Nano SVG](https://github.com/memononen/nanosvg)
