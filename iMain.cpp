@@ -59,11 +59,12 @@ void LoadSprite(){
 	iLoadFramesFromFolder(ObstacleImage, "assets/images/Obstacles");
 	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
     iSetSpritePosition(&ObstacleSprite, -200, 0);
-
-    iInitSprite(&EnemySprite);
-	iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
-	iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
-    iSetSpritePosition(&EnemySprite, 550, 250);
+    if(level ==3){
+        iInitSprite(&EnemySprite);
+        iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
+        iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
+        iSetSpritePosition(&EnemySprite, 550, 250);
+    }
 }
 
 void SetDifficultyParameters() {
@@ -90,7 +91,9 @@ void SetDifficultyParameters() {
 
 void iAnim(){
 	iAnimateSprite(&BirdSprite);
-    iAnimateSprite(&EnemySprite);
+    if(level == 3){
+        iAnimateSprite(&EnemySprite);
+    }
 }
 
 void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char *newName, int newScore) {
@@ -705,7 +708,7 @@ void iMouseWheel(int dir, int mx, int my)
 function iKeyboard() is called whenever the user hits a key in keyboard.
 key- holds the ASCII value of the key pressed.
 */
-void iKeyboard(unsigned char key, int state) 
+void iKeyPress(unsigned char key) 
 {
     // Name input handling 
     if (typingName && (GameState == 4 || (GameState == 2 && level == 0 && NameInput == 1))) {
@@ -755,7 +758,7 @@ GLUT_KEY_F7, GLUT_KEY_F8, GLUT_KEY_F9, GLUT_KEY_F10, GLUT_KEY_F11,
 GLUT_KEY_F12, GLUT_KEY_LEFT, GLUT_KEY_UP, GLUT_KEY_RIGHT, GLUT_KEY_DOWN,
 GLUT_KEY_PAGE_UP, GLUT_KEY_PAGE_DOWN, GLUT_KEY_HOME, GLUT_KEY_END,
 GLUT_KEY_INSERT */
-void iSpecialKeyboard(unsigned char key, int state)
+void iSpecialKeyPress(unsigned char key)
 {
     switch (key)
     {
@@ -776,13 +779,12 @@ int main(int argc, char *argv[])
     InitializeScoreFiles();
     LoadSprite();
     SpriteTimer = iSetTimer(100, iAnim);
-    
 
     BirdFallTimer = iSetTimer(30, SpriteFall);
 
-    ObstacleMoveTimer = iSetTimer(1, ObstacleMove);
+    ObstacleMoveTimer = iSetTimer(10, ObstacleMove);
 
-    EnemyMoveTimer = iSetTimer(10, EnemyMove);
+    EnemyMoveTimer = iSetTimer(20, EnemyMove);
 
     iInitializeFont();
 
