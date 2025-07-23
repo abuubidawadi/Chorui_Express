@@ -414,10 +414,12 @@ void HighScore(){
     }
 }
 
-
+void Credit(){
+    iShowImage(0, 0, "assets/images/pages/Credit.jpg");
+}
 
 void Exit(){
-    iShowImage(0, 0, "assets/images/pages/HomePage.jpg");
+    exit(0);
 }
 
 /*
@@ -476,10 +478,12 @@ void iDraw()
     else if(GameState==5){
         HighScore();
     }
-    else if(GameState==5){
+    else if(GameState==6){
         Exit();
     }
-
+    else if(GameState==7){
+        Credit();
+    }
 }
 
 /*
@@ -536,6 +540,9 @@ void iMouse(int button, int state, int mx, int my){
             }
             else if (mx > 387 && mx < 692 && my > 98 && my < 148){
                 GameState = 6;      //exit
+            }
+            else if(mx > 92 && mx < 177 && my > 76 && my < 208){
+                GameState = 7;      //credit
             }
         }
 
@@ -603,6 +610,12 @@ void iMouse(int button, int state, int mx, int my){
                 if(mx > 845 && mx < 980 && my > 470 && my < 577){
                     LevelHighScore = 0;  
                 }
+            }
+        }
+
+        else if(GameState==7){
+            if(mx > 845 && mx < 980 && my > 470 && my < 577){
+                GameState = 1;      //back to main menu
             }
         }
 
