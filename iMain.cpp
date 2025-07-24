@@ -1,12 +1,19 @@
 #include "iGraphics.h"
 #include "iSound.h"
 #include "iFont.h"
+#include <stdio.h>
+#include <string.h>
+
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
 #define MAX_LEADERS 10
 #define MAX_NAME_LEN 30
+
+// Path for save file
+#define SAVE_FILE "savegame.dat"
+
 
 
 int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
@@ -114,7 +121,6 @@ void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char
 }
 
 
-//#define MAX_ENTRIES 10
 
 void AddScore(int level, char name[], int score) {
     char *filename;
@@ -216,6 +222,87 @@ void InitializeScoreFiles() {
     }
 }
 
+
+// starting a new game (or pausing mid-play) e call korbo
+void SaveGame() {
+    FILE *fp = fopen(SAVE_FILE, "wb");
+    if (!fp) return;
+
+    
+    fwrite(&GameState, sizeof(GameState), 1, fp);
+    fwrite(&level, sizeof(level), 1, fp);
+    fwrite(&pause, sizeof(pause), 1, fp);
+    fwrite(&score, sizeof(score), 1, fp);
+    fwrite(&highScore, sizeof(highScore), 1, fp);
+    
+    
+    fwrite(&BirdSprite.x, sizeof(int), 1, fp);
+    fwrite(&BirdSprite.y, sizeof(int), 1, fp);
+
+    
+    fwrite(&ObstacleSprite.x, sizeof(int), 1, fp);
+    fwrite(&ObstacleSprite.y, sizeof(int), 1, fp);
+    
+    // Enemy position only for level 3
+    if (level == 3) {
+        fwrite(&EnemySprite.x, sizeof(int), 1, fp);
+        fwrite(&EnemySprite.y, sizeof(int), 1, fp);
+    }
+
+    // Save player name length + name
+    int nameLen = strlen(playerName);
+    fwrite(&nameLen, sizeof(int), 1, fp);
+    fwrite(playerName, sizeof(char), nameLen + 1, fp);
+
+    // Save audio preferences
+    fwrite(&bg_music, sizeof(bg_music), 1, fp);
+    fwrite(&bird_sound, sizeof(bird_sound), 1, fp);
+
+    fclose(fp);
+}
+
+// load an existing save (if any)
+void LoadGame() {
+    FILE *fp = fopen(SAVE_FILE, "rb");
+    if (!fp) return; // No save file yet
+
+    fread(&GameState, sizeof(GameState), 1, fp);
+    fread(&level, sizeof(level), 1, fp);
+    fread(&pause, sizeof(pause), 1, fp);
+    fread(&score, sizeof(score), 1, fp);
+    fread(&highScore, sizeof(highScore), 1, fp);
+
+    fread(&BirdSprite.x, sizeof(int), 1, fp);
+    fread(&BirdSprite.y, sizeof(int), 1, fp);
+
+    fread(&ObstacleSprite.x, sizeof(int), 1, fp);
+    fread(&ObstacleSprite.y, sizeof(int), 1, fp);
+
+    if (level == 3) {
+        fread(&EnemySprite.x, sizeof(int), 1, fp);
+        fread(&EnemySprite.y, sizeof(int), 1, fp);
+    }
+
+    int nameLen;
+    fread(&nameLen, sizeof(int), 1, fp);
+    fread(playerName, sizeof(char), nameLen + 1, fp);
+
+    fread(&bg_music, sizeof(bg_music), 1, fp);
+    fread(&bird_sound, sizeof(bird_sound), 1, fp);
+
+    fclose(fp);
+
+    // Re-initialize sprites and timers
+    LoadSprite();
+    SetDifficultyParameters();
+
+    // Resume timers
+    iResumeTimer(SpriteTimer);
+    iResumeTimer(BirdFallTimer);
+    iResumeTimer(ObstacleMoveTimer);
+    iResumeTimer(EnemyMoveTimer);
+}
+
 void GameOver() {
     
     if(score > highScore) highScore = score;
@@ -225,6 +312,7 @@ void GameOver() {
     iPauseTimer(ObstacleMoveTimer);
     iPauseTimer(EnemyMoveTimer);
     PausePossible = 0;
+
     AddScore(level, playerName, score);
     
 }
@@ -372,7 +460,6 @@ void Settings(){
     }
 
     iSetColor(0, 0, 0);
-    //iText(50, 100, "Player Name:", GLUT_BITMAP_HELVETICA_18);
     iText(465, 215, playerName, GLUT_BITMAP_HELVETICA_18);
 
     if(typingName){
@@ -419,6 +506,7 @@ void Credit(){
 }
 
 void Exit(){
+    LoadGame(); // Save current game state before exiting
     exit(0);
 }
 
@@ -576,7 +664,7 @@ void iMouse(int button, int state, int mx, int my){
 
             else if(mx > 215 && mx < 400 && my > 150 && my < 170){   //reset all scores
                 ClearAllScores();
-               // ResetAllScores();
+               
             }
 
         }
@@ -788,7 +876,8 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     // place your own initialization codes here.
-    //InitLeaderboards(); 
+    
+    LoadGame(); // Load existing game state if available
     InitializeScoreFiles();
     LoadSprite();
     SpriteTimer = iSetTimer(100, iAnim);
