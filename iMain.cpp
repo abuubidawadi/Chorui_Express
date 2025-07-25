@@ -202,11 +202,11 @@ void ShowLeaderboard() {
     for (int i = 0; i < totalScores && i < 10; i++) {
         char buf[200];
         sprintf(buf, "%2d. %-20s %5d", i + 1, names[i], scores[i]);
-        iText(360, 390 - i * 30, buf, GLUT_BITMAP_HELVETICA_18);
+        iShowText(360, 390 - i * 30, buf, "assets/fonts/englishfont.ttf", 18);
     }
     
     if (totalScores == 0) {
-        iText(350, 300, "No high scores yet!", GLUT_BITMAP_HELVETICA_18);
+        iShowText(350, 300, "No high scores yet!", "assets/fonts/englishfont.ttf", 18);
     }
 }
 
@@ -323,13 +323,6 @@ void GameOver() {
     
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
-
-    static int dead = 1;
-
-    if(dead == 1){
-        if(bird_sound == 1) iPlaySound("assets/sounds/death.wav", false, 100);
-        dead = 0;
-    }
 
     iSetColor(118, 88, 71);
     char scoreText[20];
