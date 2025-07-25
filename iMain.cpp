@@ -14,9 +14,7 @@
 // Path for save file
 #define SAVE_FILE "savegame.dat"
 
-
-
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CollisionSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite;
 
@@ -357,7 +355,7 @@ void GamePlay(){
     int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
     int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
     if (count / (20.0 * visibleCount) > 0.01) {
-        IsGameOver = 1;
+        IsGameOver = 1;   
     }
 
     if(IsGameOver == 1){
@@ -372,16 +370,16 @@ void GamePlay(){
     }
 
     //score and name
-    iSetColor(0, 0, 0);
+    iSetColor(55, 33, 21);
     char scoreText[20];
-    sprintf(scoreText, "Score: %d", score);
-    iText(20, 50, scoreText, GLUT_BITMAP_HELVETICA_18);
+    sprintf(scoreText, "†¯‹vi: %d", score);
+    iShowText(20, 50, scoreText, "assets/fonts/banglafont.ttf", 20);
 
     char highScoreText[30];
-    sprintf(highScoreText, "High Score: %d", highScore);
-    iText(20, 20, highScoreText, GLUT_BITMAP_HELVETICA_18);
+    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", highScore);
+    iShowText(20, 20, highScoreText, "assets/fonts/banglafont.ttf", 20);
 
-    iText(20, 80, playerName, GLUT_BITMAP_HELVETICA_18);
+    iShowText(20, 80, playerName, "assets/fonts/englishfont.ttf", 20);
 
 }
 
@@ -519,6 +517,9 @@ void iDraw()
 
     if(bg_music == 1) iResumeSound(BGmusic);
     else if(bg_music == 0) iPauseSound(BGmusic);
+
+    /*if(bird_sound == 1) iResumeSound(CollisionSound);
+    else if(bird_sound == 0) iPauseSound(CollisionSound);*/
 
     if(GameState==0){
         HomePage();
