@@ -14,15 +14,16 @@
 // Path for save file
 #define SAVE_FILE "savegame.dat"
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CollisionSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
-Image BirdImage[6], ObstacleImage[1], EnemyImage[6];
-Sprite BirdSprite, ObstacleSprite, EnemySprite;
+int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CoinSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
+Image BirdImage[6], ObstacleImage[1], EnemyImage[6], CoinImage[6];
+Sprite BirdSprite, ObstacleSprite, EnemySprite, CoinSprite;
 
-int SpriteTimer, BirdFallTimer, ObstacleMoveTimer, EnemyMoveTimer;
+int SpriteTimer, BirdFallTimer, ObstacleMoveTimer, EnemyMoveTimer, CoinMoveTimer;
 
 int score = 0;
 int highScore = 0;
 int obstacleSpeed = 5;
+int CoinSpeed = 5;
 int enemySpeed = 4;
 int gravity = 5;
 int jumpSpeed = 50;
@@ -64,6 +65,12 @@ void LoadSprite(){
 	iLoadFramesFromFolder(ObstacleImage, "assets/images/Obstacles");
 	iChangeSpriteFrames(&ObstacleSprite, ObstacleImage, 1);
     iSetSpritePosition(&ObstacleSprite, -200, 0);
+
+    iInitSprite(&CoinSprite);
+	iLoadFramesFromFolder(CoinImage, "assets/images/coin");
+	iChangeSpriteFrames(&CoinSprite, CoinImage, 6);
+    iSetSpritePosition(&CoinSprite, -200, 0);
+
     if(level ==3){
         iInitSprite(&EnemySprite);
         iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
@@ -75,18 +82,21 @@ void LoadSprite(){
 void SetDifficultyParameters() {
     if(level == 1){         // Easy
         obstacleSpeed = 4;
+        CoinSpeed = obstacleSpeed;
         enemySpeed = 8;
         gravity = 4;
         jumpSpeed = 50;
     }
     else if(level == 2){    // Medium
         obstacleSpeed = 5;
+        CoinSpeed = obstacleSpeed;
         enemySpeed = 10;
         gravity = 4;
         jumpSpeed = 50;
     }
     else if(level == 3){    // Hard
         obstacleSpeed = 6;
+        CoinSpeed = obstacleSpeed;
         enemySpeed = 12;
         gravity = 4;
         jumpSpeed = 50;
@@ -96,6 +106,7 @@ void SetDifficultyParameters() {
 
 void iAnim(){
 	iAnimateSprite(&BirdSprite);
+    iAnimateSprite(&CoinSprite);
     if(level == 3){
         iAnimateSprite(&EnemySprite);
     }
@@ -240,6 +251,9 @@ void SaveGame() {
     
     fwrite(&ObstacleSprite.x, sizeof(int), 1, fp);
     fwrite(&ObstacleSprite.y, sizeof(int), 1, fp);
+
+    fwrite(&CoinSprite.x, sizeof(int), 1, fp);
+    fwrite(&CoinSprite.y, sizeof(int), 1, fp);
     
     // Enemy position only for level 3
     if (level == 3) {
@@ -276,6 +290,9 @@ void LoadGame() {
     fread(&ObstacleSprite.x, sizeof(int), 1, fp);
     fread(&ObstacleSprite.y, sizeof(int), 1, fp);
 
+    fread(&CoinSprite.x, sizeof(int), 1, fp);
+    fread(&CoinSprite.y, sizeof(int), 1, fp);
+
     if (level == 3) {
         fread(&EnemySprite.x, sizeof(int), 1, fp);
         fread(&EnemySprite.y, sizeof(int), 1, fp);
@@ -298,6 +315,7 @@ void LoadGame() {
     iResumeTimer(SpriteTimer);
     iResumeTimer(BirdFallTimer);
     iResumeTimer(ObstacleMoveTimer);
+    iResumeTimer(CoinMoveTimer);
     iResumeTimer(EnemyMoveTimer);
 }
 
@@ -325,6 +343,7 @@ void GameOver() {
     iPauseTimer(SpriteTimer);
     iPauseTimer(BirdFallTimer);
     iPauseTimer(ObstacleMoveTimer);
+    iPauseTimer(CoinMoveTimer);
     iPauseTimer(EnemyMoveTimer);
     PausePossible = 0;
 
@@ -349,8 +368,16 @@ void SpriteFall(){
 void ObstacleMove(){
     if(level > 0 && pause % 2 == 0){
         ObstacleSprite.x -= obstacleSpeed;
-        score++;
+        CoinSprite.x -= CoinSpeed;
             if(ObstacleSprite.x < -15276) ObstacleSprite.x = 1000;
+            if(CoinSprite.x < -15276) CoinSprite.x = 1000;
+    }
+}
+
+void CoinMove(){
+    if(level > 0 && pause % 2 == 0){
+        CoinSprite.x -= CoinSpeed;
+            if(CoinSprite.x < -15276) CoinSprite.x = 1000;
     }
 }
 
@@ -367,12 +394,25 @@ void EnemyMove() {
 void GamePlay(){
     iShowSprite(&BirdSprite);
     iShowSprite(&ObstacleSprite);
+    iShowSprite(&CoinSprite);
     iShowSprite(&EnemySprite);
 
     int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
     int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
     if (count / (20.0 * visibleCount) > 0.01) {
         IsGameOver = 1;   
+    }
+
+    int coin_count = iCheckCollision(&BirdSprite, &CoinSprite);
+    int coin_visibleCount = iGetVisiblePixelsCount(&BirdSprite);
+    if (coin_count / (5.0 * coin_visibleCount) > 0.01) {
+        score++;
+        if(bird_sound == 1){
+            iResumeSound(CoinSound);
+            }
+    }
+    else{
+        iPauseSound(CoinSound);
     }
 
     if(IsGameOver == 1){
@@ -631,7 +671,9 @@ void iMouse(int button, int state, int mx, int my){
                 BirdSprite.y = 250;
                 BirdSprite.x = 150;
                 ObstacleSprite.x = 800;
+                CoinSprite.x = 800;
                 ObstacleSprite.y = 0;
+                CoinSprite.y = 0;
                 EnemySprite.x = 1200;
                 EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
             }
@@ -753,18 +795,18 @@ void iMouse(int button, int state, int mx, int my){
                 GameState = 1;      //back to main menu
             }
             else if(mx > 356 && mx < 645 && my > 296 && my < 371){
-                level = 1; BirdSprite.y = 250; ObstacleSprite.x = 800;      //easy
+                level = 1; BirdSprite.y = 250; ObstacleSprite.x = 1200; CoinSprite.x = 1200;      //easy
                 IsGameOver = 0;
                 SetDifficultyParameters();      
             }
             else if(mx > 356 && mx < 645 && my > 192 && my < 265){
                 IsGameOver = 0;
-                level = 2; BirdSprite.y = 250; ObstacleSprite.x = 800;      //medium
+                level = 2; BirdSprite.y = 250; ObstacleSprite.x = 1000; CoinSprite.x = 1000;     //medium
                 SetDifficultyParameters();
             }
             else if(mx > 356 && mx < 645 && my > 94 && my < 166){
                 IsGameOver = 0;
-                level = 3; BirdSprite.y = 250; ObstacleSprite.x = 800;      //hard
+                level = 3; BirdSprite.y = 250; ObstacleSprite.x = 800; CoinSprite.x = 800;     //hard
                 SetDifficultyParameters();
             }
         }
@@ -782,6 +824,7 @@ void iMouse(int button, int state, int mx, int my){
                                 score = 0;
                                 BirdSprite.y = 250;
                                 ObstacleSprite.x = 800;
+                                CoinSprite.x = 800;
                                 EnemySprite.x = 1200;
                                 EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
                             }
@@ -798,6 +841,7 @@ void iMouse(int button, int state, int mx, int my){
                 score = 0;
                 BirdSprite.y = 250;
                 ObstacleSprite.x = 800;
+                CoinSprite.x = 800;
                 EnemySprite.x = 1200;
                 EnemySprite.y = rand() % (SCREEN_HEIGHT - 150);
             }
@@ -922,6 +966,9 @@ int main(int argc, char *argv[])
 
     iInitializeSound();
     BGmusic = iPlaySound("assets/sounds/BGmusic.wav", true, 50);
+    CoinSound = iPlaySound("assets/sounds/coin.wav", true, 50);
+
+    iPauseSound(CoinSound);
 
     iOpenWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chorui Express");
     return 0;
