@@ -305,6 +305,23 @@ void GameOver() {
     
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
+
+    static int dead = 1;
+
+    if(dead == 1){
+        if(bird_sound == 1) iPlaySound("assets/sounds/death.wav", false, 100);
+        dead = 0;
+    }
+
+    iSetColor(118, 88, 71);
+    char scoreText[20];
+    sprintf(scoreText, "Avcbvi †¯‹vit %d", score);
+    iShowText(395, 369, scoreText, "assets/fonts/banglafont2.ttf", 40);
+
+    char highScoreText[30];
+    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", highScore);
+    iShowText(398, 313, highScoreText, "assets/fonts/banglafont2.ttf", 40);
+
     iPauseTimer(SpriteTimer);
     iPauseTimer(BirdFallTimer);
     iPauseTimer(ObstacleMoveTimer);
@@ -843,6 +860,18 @@ void iKeyPress(unsigned char key)
     case ' ':
         if (GameState == 2 && level > 0 && pause % 2 == 0 && IsGameOver == 0) {
             BirdSprite.y += jumpSpeed; 
+        }
+        break;
+    case 'p':
+        if (GameState == 2 && level > 0) {
+            bird_sound = 0;
+            bg_music = 0;
+        }
+        break;
+    case 'r':
+        if (GameState == 2 && level > 0) {
+            bird_sound = 1;
+            bg_music = 1;
         }
         break;
     default:
