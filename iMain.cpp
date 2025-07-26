@@ -787,7 +787,7 @@ void iMouse(int button, int state, int mx, int my){
         }
 
         else if(GameState==6){      //in exit
-            exit(0);
+            Exit();
         }
 
         else if(GameState==2 && level==0 && NameInput == 1){   //name input
