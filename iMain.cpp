@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 600
 
@@ -110,6 +109,30 @@ void iAnim(){
     if(level == 3){
         iAnimateSprite(&EnemySprite);
     }
+}
+
+int GetHighScoreForLevel(int level) {
+    char *filename;
+    if (level == 1) filename = "ezScore.txt";
+    else if (level == 2) filename = "medScore.txt";
+    else if (level == 3) filename = "hardScore.txt";
+    else return 0;
+
+    FILE *fp = fopen(filename, "r");
+    if (!fp) return 0;
+
+    int highScore = 0;
+    char name[100];
+    int score;
+
+    while (fscanf(fp, "%s %d", name, &score) == 2) {
+        if (score > highScore) {
+            highScore = score;
+        }
+    }
+
+    fclose(fp);
+    return highScore;
 }
 
 void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char *newName, int newScore) {
@@ -320,7 +343,7 @@ void LoadGame() {
 }
 
 void GameOver() {
-    
+    int currentLevelHighScore = GetHighScoreForLevel(level);
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
 
@@ -330,7 +353,7 @@ void GameOver() {
     iShowText(395, 369, scoreText, "assets/fonts/banglafont2.ttf", 40);
 
     char highScoreText[30];
-    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", highScore);
+    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", currentLevelHighScore);
     iShowText(398, 313, highScoreText, "assets/fonts/banglafont2.ttf", 40);
 
     iPauseTimer(SpriteTimer);
@@ -419,6 +442,9 @@ void GamePlay(){
             iResumeTimer(EnemyMoveTimer);
     }
 
+    int currentLevelHighScore = GetHighScoreForLevel(level);
+
+
     //score and name
     iSetColor(55, 33, 21);
     char scoreText[20];
@@ -426,7 +452,7 @@ void GamePlay(){
     iShowText(20, 50, scoreText, "assets/fonts/banglafont.ttf", 20);
 
     char highScoreText[30];
-    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", highScore);
+    sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", currentLevelHighScore);
     iShowText(20, 20, highScoreText, "assets/fonts/banglafont.ttf", 20);
 
     iShowText(20, 80, playerName, "assets/fonts/englishfont.ttf", 20);
@@ -554,7 +580,7 @@ void Credit(){
 }
 
 void Exit(){
-    LoadGame(); // Save current game state before exiting
+    SaveGame(); // Save current game state before exiting
     exit(0);
 }
 
@@ -777,6 +803,8 @@ void iMouse(int button, int state, int mx, int my){
                     typingName = 0;
                 }
                 else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
+                    LoadGame();
+                    GameState = 2;
                     NameInput = 0;
                     IsGameOver = 0;
                     typingName = 0;
