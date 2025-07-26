@@ -341,7 +341,7 @@ void LoadGame() {
 }
 
 void GameOver() {
-    int currentLevelHighScore = GetHighScoreForLevel(level);
+    //int currentLevelHighScore = GetHighScoreForLevel(level);
     if(score > highScore) highScore = score;
     iShowImage(0, 0, "assets/images/pages/GameOverWindow.png");
 
@@ -351,6 +351,7 @@ void GameOver() {
     iShowText(395, 369, scoreText, "assets/fonts/banglafont2.ttf", 40);
 
     char highScoreText[30];
+    int currentLevelHighScore = GetHighScoreForLevel(level);
     sprintf(highScoreText, "m‡e©v”P †¯‹vi: %d", currentLevelHighScore);
     iShowText(398, 313, highScoreText, "assets/fonts/banglafont2.ttf", 40);
 
