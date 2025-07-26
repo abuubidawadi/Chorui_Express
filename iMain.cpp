@@ -21,10 +21,10 @@ int SpriteTimer, BirdFallTimer, ObstacleMoveTimer, EnemyMoveTimer, CoinMoveTimer
 
 int score = 0;
 int highScore = 0;
-int obstacleSpeed = 5;
-int CoinSpeed = 5;
-int enemySpeed = 4;
-int gravity = 5;
+int obstacleSpeed;
+int CoinSpeed;
+int enemySpeed;
+int gravity;
 int jumpSpeed = 50;
 
 int typingName = 0;
@@ -70,34 +70,32 @@ void LoadSprite(){
 	iChangeSpriteFrames(&CoinSprite, CoinImage, 6);
     iSetSpritePosition(&CoinSprite, -200, 0);
 
-    if(level ==3){
-        iInitSprite(&EnemySprite);
-        iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
-        iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
-        iSetSpritePosition(&EnemySprite, 550, 250);
-    }
+    iInitSprite(&EnemySprite);
+    iLoadFramesFromFolder(EnemyImage, "assets/images/enemy");
+    iChangeSpriteFrames(&EnemySprite, EnemyImage, 6);
+    iSetSpritePosition(&EnemySprite, 550, 250);
 }
 
 void SetDifficultyParameters() {
     if(level == 1){         // Easy
-        obstacleSpeed = 4;
+        obstacleSpeed = 5;
         CoinSpeed = obstacleSpeed;
         enemySpeed = 8;
-        gravity = 4;
+        gravity = 5;
         jumpSpeed = 50;
     }
     else if(level == 2){    // Medium
-        obstacleSpeed = 5;
+        obstacleSpeed = 7;
         CoinSpeed = obstacleSpeed;
         enemySpeed = 10;
-        gravity = 4;
+        gravity = 7;
         jumpSpeed = 50;
     }
     else if(level == 3){    // Hard
-        obstacleSpeed = 6;
+        obstacleSpeed = 7;
         CoinSpeed = obstacleSpeed;
-        enemySpeed = 12;
-        gravity = 4;
+        enemySpeed = 10;
+        gravity = 7;
         jumpSpeed = 50;
     }
 }
@@ -331,7 +329,7 @@ void LoadGame() {
     fclose(fp);
 
     // Re-initialize sprites and timers
-    LoadSprite();
+    //LoadSprite();
     SetDifficultyParameters();
 
     // Resume timers
@@ -411,12 +409,20 @@ void GamePlay(){
     iShowSprite(&BirdSprite);
     iShowSprite(&ObstacleSprite);
     iShowSprite(&CoinSprite);
-    iShowSprite(&EnemySprite);
+    if(level == 3) iShowSprite(&EnemySprite);
 
-    int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
+    int count = iCheckCollision(&BirdSprite, &ObstacleSprite);
     int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
     if (count / (20.0 * visibleCount) > 0.01) {
         IsGameOver = 1;   
+    }
+
+    if(level == 3){
+        int count = iCheckCollision(&BirdSprite, &ObstacleSprite) + iCheckCollision(&BirdSprite, &EnemySprite);
+        int visibleCount = iGetVisiblePixelsCount(&BirdSprite);
+        if (count / (20.0 * visibleCount) > 0.01) {
+            IsGameOver = 1;   
+    }
     }
 
     int coin_count = iCheckCollision(&BirdSprite, &CoinSprite);
@@ -836,6 +842,7 @@ void iMouse(int button, int state, int mx, int my){
         else if(GameState==2 && level>0 && PausePossible==1){      //in any level
                 if(mx > 924 && mx < 974 && my > 530 && my < 574){
                     pause++;
+                    SaveGame();
                 }
                 if(pause%2!=0){
                             if(mx > 385 && mx < 694 && my > 339 && my < 395){       //continue
@@ -976,13 +983,13 @@ int main(int argc, char *argv[])
     //LoadGame(); // Load existing game state if available
     InitializeScoreFiles();
     LoadSprite();
-    SpriteTimer = iSetTimer(100, iAnim);
+    SpriteTimer = iSetTimer(80, iAnim);
 
     BirdFallTimer = iSetTimer(30, SpriteFall);
 
     ObstacleMoveTimer = iSetTimer(10, ObstacleMove);
 
-    EnemyMoveTimer = iSetTimer(20, EnemyMove);
+    EnemyMoveTimer = iSetTimer(10, EnemyMove);
 
     iInitializeFont();
 
