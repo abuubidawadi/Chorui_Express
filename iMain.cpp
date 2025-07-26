@@ -13,7 +13,7 @@
 // Path for save file
 #define SAVE_FILE "savegame.dat"
 
-int GameState = 0, level = 0, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CoinSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
+int GameState = 0, level, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CoinSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6], CoinImage[6];
 Sprite BirdSprite, ObstacleSprite, EnemySprite, CoinSprite;
 
@@ -261,7 +261,7 @@ void SaveGame() {
     if (!fp) return;
 
     
-    fwrite(&GameState, sizeof(GameState), 1, fp);
+    /*fwrite(&GameState, sizeof(GameState), 1, fp);*/
     fwrite(&level, sizeof(level), 1, fp);
     fwrite(&pause, sizeof(pause), 1, fp);
     fwrite(&score, sizeof(score), 1, fp);
@@ -301,7 +301,7 @@ void LoadGame() {
     FILE *fp = fopen(SAVE_FILE, "rb");
     if (!fp) return; // No save file yet
 
-    fread(&GameState, sizeof(GameState), 1, fp);
+    /*fread(&GameState, sizeof(GameState), 1, fp);*/
     fread(&level, sizeof(level), 1, fp);
     fread(&pause, sizeof(pause), 1, fp);
     fread(&score, sizeof(score), 1, fp);
@@ -790,7 +790,7 @@ void iMouse(int button, int state, int mx, int my){
             Exit();
         }
 
-        else if(GameState==2 && level==0 && NameInput == 1){   //name input
+        else if(GameState==2 && NameInput == 1){   //name input
             if(mx > 530 && mx < 700 && my > 210 && my < 235){   //click in name input area
                 typingName = 1;
             }
@@ -801,6 +801,7 @@ void iMouse(int button, int state, int mx, int my){
                     NameInput = 0;
                     IsGameOver = 0;
                     typingName = 0;
+                    level = 0;
                 }
                 else if(mx > 443 && mx < 633 && my > 273 && my < 321){   //resume game
                     LoadGame();
@@ -972,7 +973,7 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
     // place your own initialization codes here.
     
-    LoadGame(); // Load existing game state if available
+    //LoadGame(); // Load existing game state if available
     InitializeScoreFiles();
     LoadSprite();
     SpriteTimer = iSetTimer(100, iAnim);
