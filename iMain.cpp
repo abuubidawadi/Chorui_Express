@@ -11,7 +11,7 @@
 #define MAX_NAME_LEN 30
 
 // Path for save file
-#define SAVE_FILE "savegame.dat"
+#define SAVE_FILE "assets/files/savegame.dat"
 
 int GameState = 0, level, pause = 0, bg_music = 1, bird_sound = 1, BGmusic, CoinSound, IsGameOver = 0, PausePossible = 1, NameInput = 1, LevelHighScore = 0;
 Image BirdImage[6], ObstacleImage[1], EnemyImage[6], CoinImage[6];
@@ -111,9 +111,9 @@ void iAnim(){
 
 int GetHighScoreForLevel(int level) {
     char *filename;
-    if (level == 1) filename = "ezScore.txt";
-    else if (level == 2) filename = "medScore.txt";
-    else if (level == 3) filename = "hardScore.txt";
+    if (level == 1) filename = "assets/files/ezScore.txt";
+    else if (level == 2) filename = "assets/files/medScore.txt";
+    else if (level == 3) filename = "assets/files/hardScore.txt";
     else return 0;
 
     FILE *fp = fopen(filename, "r");
@@ -155,9 +155,9 @@ void InsertScore(char names[][MAX_NAME_LEN], int scores[], int max_leaders, char
 void AddScore(int level, char name[], int score) {
     char *filename;
 
-    if (level == 1) filename = "ezScore.txt";
-    else if (level == 2) filename = "medScore.txt";
-    else filename = "hardScore.txt";
+    if (level == 1) filename = "assets/files/ezScore.txt";
+    else if (level == 2) filename = "assets/files/medScore.txt";
+    else filename = "assets/files/hardScore.txt";
 
     FILE *fp = fopen(filename, "a");
     if (fp) {
@@ -171,9 +171,9 @@ int totalScores = 0;
 void LoadScores(int level) {
     char *filename;
 
-    if (level == 1) filename = "ezScore.txt";
-    else if (level == 2) filename = "medScore.txt";
-    else filename = "hardScore.txt";
+    if (level == 1) filename = "assets/files/ezScore.txt";
+    else if (level == 2) filename = "assets/files/medScore.txt";
+    else filename = "assets/files/hardScore.txt";
 
     FILE *fp = fopen(filename, "r");
     if (!fp) return;
@@ -236,18 +236,18 @@ void InitializeScoreFiles() {
     FILE *f;
     
     // Check and create files if they don't exist
-    if ((f = fopen("ezScore.txt", "r")) == NULL) {
-        f = fopen("ezScore.txt", "w");
+    if ((f = fopen("assets/files/ezScore.txt", "r")) == NULL) {
+        f = fopen("assets/files/ezScore.txt", "w");
         fclose(f);
     }
     
-    if ((f = fopen("medScore.txt", "r")) == NULL) {
-        f = fopen("medScore.txt", "w");
+    if ((f = fopen("assets/files/medScore.txt", "r")) == NULL) {
+        f = fopen("assets/files/medScore.txt", "w");
         fclose(f);
     }
     
-    if ((f = fopen("hardScore.txt", "r")) == NULL) {
-        f = fopen("hardScore.txt", "w");
+    if ((f = fopen("assets/files/hardScore.txt", "r")) == NULL) {
+        f = fopen("assets/files/hardScore.txt", "w");
         fclose(f);
     }
 }
@@ -512,15 +512,15 @@ void ClearAllScores() {
     FILE *fp;
 
     // Easy
-    fp = fopen("ezScore.txt", "w");
+    fp = fopen("assets/files/ezScore.txt", "w");
     if(fp) fclose(fp);
 
     // Medium
-    fp = fopen("medScore.txt", "w");
+    fp = fopen("assets/files/medScore.txt", "w");
     if(fp) fclose(fp);
 
     // Hard
-    fp = fopen("hardScore.txt", "w");
+    fp = fopen("assets/files/hardScore.txt", "w");
     if(fp) fclose(fp);
 }
 
