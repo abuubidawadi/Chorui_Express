@@ -49,3 +49,7 @@ Ensure you have the following installed:
 - **C Compiler** (e.g., GCC)  
 - **iGraphics library**: [Modern iGraphics README](https://github.com/mahirlabibdihan/Modern-iGraphics/blob/8e4758f379ab15dfee0e536fb4503c6e121afe8c/README.md)  
 - **iSound library** (for audio support)  
+
+## Demo Video
+Watch the gameplay video here:  
+[![Chorui Express Gameplay](https://img.youtube.com/vi/XlcYUqrTRaw/0.jpg)](https://youtu.be/XlcYUqrTRaw)
