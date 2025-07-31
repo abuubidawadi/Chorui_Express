@@ -10,7 +10,7 @@ The game was built as a Level-1 Term-1 project.
 - **ABU UBIDA WADI**
 
 ### Supervisor
-- **MAHIR LABIB DIHAN**
+- **MAHIR LABIB DIHAN** (Adjunct Lecturer,CSE, BUET)
 
 ## Features
 - A 2D side-scrolling gameplay experience with sprite-based design.  
