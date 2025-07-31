@@ -34,7 +34,7 @@ The game was built as a Level-1 Term-1 project.
 ## Screenshots
 Here are some screenshots of **Chorui Express** gameplay:
 
-![Main Menu](assets/images/screenshots/main menu.png)  
+![Main Menu](assets/images/screenshots/main_menu.png)  
 *Main menu of the game.*
 
 ![Gameplay](assets/images/screenshots/level_Ez.png)  
